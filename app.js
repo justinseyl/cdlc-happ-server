@@ -48,7 +48,10 @@ const {gettotals_admin} = require('./user');
 const {getCurrentSurvey_admin} = require('./user');
 const {sendNewSurvey} = require('./user');
 const {setNewFormFriday} = require('./user');
+const {setNewFormFridayMan} = require('./user');
+const {setNewFormFridayTest} = require('./user');
 const {getAllUsers} = require('./user');
+const {getAllUsersMan} = require('./user');
 const {allsugg_admin} = require('./user');
 const {allissues_admin} = require('./user');
 const {reslveIssue_admin} = require('./user');
@@ -125,7 +128,7 @@ app.get('/getalerts_admin', getalerts_admin);
 app.post('/makeadmin', makeadmin);
 app.post('/forgotPass', forgotPass);
 app.post('/setNewPassWord', setNewPassWord);
-app.post('/get_schedule', get_schedule);
+app.get('/get_schedule', get_schedule);
 app.post('/sendNewSchedule', sendNewSchedule);
 app.get('/getCurrentTest', getCurrentTest);
 app.post('/deletesurveygroup', deletesurveygroup);
@@ -141,7 +144,7 @@ var j4 = schedule.scheduleJob('updaterTest', '*/15 * * * *', function(){
     var j1 = schedule.scheduleJob('testSchedule', date, function(){
 
       setNewFormFridayTest();
-      sendNewScheduleAlter('test',datObj.senddaay,datObj.sendtime);
+      sendNewScheduleAlter('test',datObj.senddaay,datObj.sendtime,date);
     });
     console.log('Updating Test Schedule: ' + date);
   });
@@ -172,8 +175,7 @@ var j4 = schedule.scheduleJob('updaterManager', '*/15 * * * *', function(){
         results.forEach(function(e) {
           var mailOptions = {
             from: 'automated@cdlchappiness.com',
-            //to: e.email,
-            to: 'nickhowell6425@gmail.com',
+            to: e.email,
             subject: 'Your Weekly CDLC Happiness Survey Is Now Available!',
             text: 'http://cdlchappiness.com/html/home.html'
           };
@@ -238,8 +240,7 @@ var j7 = schedule.scheduleJob('manSchedule', '0 9 * * 6', function(){
     results.forEach(function(e) {
       var mailOptions = {
         from: 'automated@cdlchappiness.com',
-        //to: e.email,
-        to: 'nickhowell6425@gmail.com',
+        to: e.email,
         subject: 'Your Weekly CDLC Happiness Survey Is Now Available!',
         text: 'http://cdlchappiness.com/html/home.html'
       };
@@ -272,8 +273,7 @@ var j2 = schedule.scheduleJob('updater', '*/15 * * * *', function(){
         results.forEach(function(e) {
           var mailOptions = {
             from: 'automated@cdlchappiness.com',
-            //to: e.email,
-            to: 'nickhowell6425@gmail.com',
+            to: e.email,
             subject: 'Your Weekly CDLC Happiness Survey Is Now Available!',
             text: 'http://cdlchappiness.com/html/home.html'
           };
@@ -338,8 +338,7 @@ var j1 = schedule.scheduleJob('userSchedule', '0 9 * * 6', function(){
     results.forEach(function(e) {
       var mailOptions = {
         from: 'automated@cdlchappiness.com',
-        //to: e.email,
-        to: 'nickhowell6425@gmail.com',
+        to: e.email,
         subject: 'Your Weekly CDLC Happiness Survey Is Now Available!',
         text: 'http://cdlchappiness.com/html/home.html'
       };

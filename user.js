@@ -4,7 +4,7 @@ const uuid = require('uuidv4');
 var generator = require('generate-password');
 const Q = require('q');
 
-const gl_manager = 'Manager/Lead';
+const gl_manager = 'Department Manager';
 
 module.exports = {
     login: (req, res) => {
@@ -469,21 +469,37 @@ module.exports = {
       let time = req.body.time;
 
       if (time == 'week') {
-        var d = new Date();
-        d.setDate(d.getDate() + (day + 7 - d.getDay()) % 7);
+        const today = moment().isoWeekday();
 
-        var dbtime = d.toISOString().slice(0, 19).replace('T', ' ');
-        console.log(dbtime);
+        if (today <= day) {
+          var setdate = moment().isoWeekday(day);
+        } else {
+          var setdate = moment().add(1, 'weeks').isoWeekday(day);
+        }
+
+        var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
       }
 
       if (time == 'month') {
-        var mon = getMondays(day,0);
-        var setdate = mon[0];
+        var setdate = moment().add(1, 'months').isoWeekday(day);
 
-        if (new Date() >= setdate) {
-          var newmon = getMondays(day,1);
-          setdate = newmon[0];
-        }
+        var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+      }
+
+      if (time == 'bi-week') {
+        var setdate = moment().add(2, 'weeks').isoWeekday(day);
+
+        var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+      }
+
+      if (time == 'ninty') {
+        var setdate = moment().add(3, 'months').isoWeekday(day);
+
+        var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+      }
+
+      if (time == 'bi-yearly') {
+        var setdate = moment().add(6, 'months').isoWeekday(day);
 
         var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
       }
@@ -592,6 +608,7 @@ module.exports = {
           if (err) throw err;
 
           arr.map(function(a) {
+            console.log(a);
             db.query("insert into test (id,question,formid) values (" + a.newid + ",'" + a.newquestion + "','" + newformid + "')", (err, result) => {
               if (err) throw err;
             });
@@ -643,20 +660,12 @@ module.exports = {
     get_schedule: (req, res) => {
       let roletype = req.body.roletype;
 
-      let q = "select '---' as nextrun";
-
-      if (roletype == 'manager') {
-        q = "SELECT date_format(nextrun,'%a %b %d %Y') as nextrun FROM scheduler where id = 'manager'";
-      }
-
-      if (roletype == 'user') {
-        q = "SELECT date_format(nextrun,'%a %b %d %Y') as nextrun FROM scheduler where id = 'user'";
-      }
+      let q = "SELECT date_format(nextrun,'%m/%d/%y') as nextrun, id FROM scheduler where id = 'manager' or id = 'user'";
 
       db.query(q, (err, result) => {
         if (err) throw err;
 
-        res.send(result[0]);
+        res.send(result);
       });
     },
     deletesurveygroup: (req, res) => {
@@ -990,32 +999,44 @@ module.exports = {
       day = parseInt(day);
 
       if (time == 'week') {
-        var d = new Date();
-        d.setDate(d.getDate() + (day + 7 - d.getDay()) % 7);
-
-        var dbtime = d.toISOString().slice(0, 19).replace('T', ' ');
-        console.log(dbtime);
-      }
-
-      if (time == 'month') {
-        var mon = getMondays(day,0);
-        var setdate = mon[0];
-
-        if (new Date() >= setdate) {
-          var newmon = getMondays(day,1);
-          setdate = newmon[0];
-        }
+        var setdate = moment().add(1, 'weeks').isoWeekday(day);
 
         var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
       }
 
+      if (time == 'month') {
+        var setdate = moment().add(1, 'months').isoWeekday(day);
+
+        var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+      }
+
+      if (time == 'bi-week') {
+        var setdate = moment().add(2, 'weeks').isoWeekday(day);
+
+        var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+      }
+
+      if (time == 'ninty') {
+        var setdate = moment().add(3, 'months').isoWeekday(day);
+
+        var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+      }
+
+      if (time == 'bi-yearly') {
+        var setdate = moment().add(6, 'months').isoWeekday(day);
+
+        var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+      }
+
+      console.log(dbtime);
+
       var q = "update scheduler set day = " + day + ", timeframe = '" + time + "', nextrun = '" + dbtime + "' where id = '" + roletype + "'";
 
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        res.sendStatus(200);
-      });
+      // db.query(q, (err, result) => {
+      //   if (err) throw err;
+      //
+      //   res.sendStatus(200);
+      // });
 
     },
 };
