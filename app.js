@@ -134,86 +134,40 @@ app.get('/getCurrentTest', getCurrentTest);
 app.post('/deletesurveygroup', deletesurveygroup);
 app.post('/deletesurveygroupmulti', deletesurveygroupmulti);
 
-//TEST SCHEDULE UPDATER
-var j4 = schedule.scheduleJob('updaterTest', '*/15 * * * *', function(){
-  setTestSchedule().then(function(datObj){
-    var date = new Date(datObj.year,datObj.month,datObj.day,datObj.hour,0,0);
+//UPDATER
+var jupdater = schedule.scheduleJob('updater', '*/15 * * * *', function(){
 
-    schedule.scheduledJobs['testSchedule'].cancel();
+  setUserSchedule().then(function(datObj){
+    var dateU = new Date(datObj.year,datObj.month,datObj.day,datObj.hour,0,0);
 
-    var j1 = schedule.scheduleJob('testSchedule', date, function(){
+    schedule.scheduledJobs['userSchedule'].reschedule(dateU);
+    schedule.scheduledJobs['userScheduleAdmin'].reschedule(dateU);
 
-      setNewFormFridayTest();
-      sendNewScheduleAlter('test',datObj.senddaay,datObj.sendtime,date);
-    });
-    console.log('Updating Test Schedule: ' + date);
-  });
-});
+    console.log('Updating User Schedule: ' + dateU);
 
-//TEST SCHEDULER
-var j7 = schedule.scheduleJob('testSchedule', '0 9 * * 6', function(){
+    setManagerSchedule().then(function(datObj){
+      var dateM = new Date(datObj.year,datObj.month,datObj.day,datObj.hour,0,0);
 
-  setNewFormFridayTest();
+      schedule.scheduledJobs['manSchedule'].reschedule(dateM);
+      schedule.scheduledJobs['manScheduleAdmin'].reschedule(dateM);
 
-  console.log('New Test');
-});
+      console.log('Updating Manager Schedule: ' + dateM);
 
-//MANAGER SCHEDULE UPDATER
-var j4 = schedule.scheduleJob('updaterManager', '*/15 * * * *', function(){
-  setManagerSchedule().then(function(datObj){
-    var date = new Date(datObj.year,datObj.month,datObj.day,datObj.hour,0,0);
+      setTestSchedule().then(function(datObj){
 
-    schedule.scheduledJobs['manSchedule'].cancel();
-    schedule.scheduledJobs['manScheduleAdmin'].cancel();
+        var date = new Date(datObj.year,datObj.month,datObj.day,datObj.hour,0,0);
 
-    var j1 = schedule.scheduleJob('manSchedule', date, function(){
+        schedule.scheduledJobs['testSchedule'].reschedule(date);
 
-      setNewFormFridayMan();
-      sendNewScheduleAlter('manager',datObj.senddaay,datObj.sendtime);
-
-      getAllUsersMan().then(function(results){
-        results.forEach(function(e) {
-          var mailOptions = {
-            from: 'automated@cdlchappiness.com',
-            to: e.email,
-            subject: 'Your Weekly CDLC Happiness Survey Is Now Available!',
-            text: 'http://cdlchappiness.com/html/home.html'
-          };
-
-          transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-              console.log(error);
-            } else {
-              console.log('Email sent: ' + info.response);
-            }
-          });
-        });
-      });
-    });
-    console.log('Updating Manager Schedule: ' + date);
-
-    var j5 = schedule.scheduleJob('manScheduleAdmin', date, function(){
-
-      var mailOptionsMain = {
-        from: 'automated@cdlchappiness.com',
-        to: 'justin@cdlconsultants.com',
-        subject: 'Weekly CDLC Manager Happiness Surveys',
-        text: 'http://cdlchappiness.com/html/admin_survey.html'
-      };
-
-      transporter.sendMail(mailOptionsMain, function(error, info){
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email sent: ' + info.response);
-        }
+        console.log('Updating Test Schedule: ' + date);
       });
     });
   });
+
 });
 
 //ADMIN MANAGER
-var j6 = schedule.scheduleJob('manScheduleAdmin', '0 9 * * 6', function(){
+var j6 = schedule.scheduleJob('manScheduleAdmin', '2019-01-01T00:00:00.001Z', function(){
 
   var mailOptionsMain = {
     from: 'automated@cdlchappiness.com',
@@ -232,9 +186,10 @@ var j6 = schedule.scheduleJob('manScheduleAdmin', '0 9 * * 6', function(){
 });
 
 //MANAGER SCHEDULER
-var j7 = schedule.scheduleJob('manSchedule', '0 9 * * 6', function(){
+var j7 = schedule.scheduleJob('manSchedule', '2019-01-01T00:00:00.001Z', function(){
 
   setNewFormFridayMan();
+  sendNewScheduleAlter('manager');
 
   getAllUsersMan().then(function(results){
     results.forEach(function(e) {
@@ -256,66 +211,12 @@ var j7 = schedule.scheduleJob('manSchedule', '0 9 * * 6', function(){
   });
 });
 
-//USER SCHEDULE UPDATER
-var j2 = schedule.scheduleJob('updater', '*/15 * * * *', function(){
-  setUserSchedule().then(function(datObj){
-    var date = new Date(datObj.year,datObj.month,datObj.day,datObj.hour,0,0);
-
-    schedule.scheduledJobs['userSchedule'].cancel();
-    schedule.scheduledJobs['userScheduleAdmin'].cancel();
-
-    var j1 = schedule.scheduleJob('userSchedule', date, function(){
-
-      setNewFormFriday();
-      sendNewScheduleAlter('user',datObj.senddaay,datObj.sendtime);
-
-      getAllUsers().then(function(results){
-        results.forEach(function(e) {
-          var mailOptions = {
-            from: 'automated@cdlchappiness.com',
-            to: e.email,
-            subject: 'Your Weekly CDLC Happiness Survey Is Now Available!',
-            text: 'http://cdlchappiness.com/html/home.html'
-          };
-
-          transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-              console.log(error);
-            } else {
-              console.log('Email sent: ' + info.response);
-            }
-          });
-        });
-      });
-    });
-    console.log('Updating User Schedule: ' + date);
-
-    var j3 = schedule.scheduleJob('userScheduleAdmin', date, function(){
-
-      var mailOptionsMain = {
-        from: 'automated@cdlchappiness.com',
-        to: 'justin@cdlconsultants.com',
-        subject: 'Weekly CDLC Employee Happiness Surveys',
-        text: 'http://cdlchappiness.com/html/admin_survey.html'
-      };
-
-      transporter.sendMail(mailOptionsMain, function(error, info){
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email sent: ' + info.response);
-        }
-      });
-    });
-  });
-});
-
 //ADMIN USER
-var j3 = schedule.scheduleJob('userScheduleAdmin', '0 9 * * 6', function(){
+var j3 = schedule.scheduleJob('userScheduleAdmin', '2019-01-01T00:00:00.001Z', function(){
 
   var mailOptionsMain = {
     from: 'automated@cdlchappiness.com',
-    to: 'justin@cdlconsultants.com',
+    to: 'justin@cdlconsultants.com,nickhowell6425@gmail.com',
     subject: 'Weekly CDLC Employee Happiness Surveys',
     text: 'http://cdlchappiness.com/html/admin_survey.html'
   };
@@ -330,9 +231,10 @@ var j3 = schedule.scheduleJob('userScheduleAdmin', '0 9 * * 6', function(){
 });
 
 //USER SCHEDULER
-var j1 = schedule.scheduleJob('userSchedule', '0 9 * * 6', function(){
+var j1 = schedule.scheduleJob('userSchedule', '2019-01-01T00:00:00.001Z', function(){
 
   setNewFormFriday();
+  sendNewScheduleAlter('user');
 
   getAllUsers().then(function(results){
     results.forEach(function(e) {
@@ -352,6 +254,15 @@ var j1 = schedule.scheduleJob('userSchedule', '0 9 * * 6', function(){
       });
     });
   });
+});
+
+//TEST SCHEDULER
+var j7 = schedule.scheduleJob('testSchedule', '2019-01-01T00:00:00.001Z', function(){
+
+  setNewFormFridayTest();
+  sendNewScheduleAlter('test');
+
+  console.log('New Test');
 });
 
 function forgotPass(req, res) {

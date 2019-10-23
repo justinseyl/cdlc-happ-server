@@ -992,51 +992,103 @@ module.exports = {
 
         defer.resolve(dateObj);
       });
-
+      
       return defer.promise;
     },
     sendNewScheduleAlter: function(roletype,day,time) {
-      day = parseInt(day);
 
-      if (time == 'week') {
-        var setdate = moment().add(1, 'weeks').isoWeekday(day);
+      if (!day || !time) {
+        var getDayTime = "select day, timeframe from scheduler where id = '" + roletype + "'";
 
-        var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+        db.query(getDayTime, (err, result) => {
+          if (err) throw err;
+
+          if (result.length > 0) {
+            var getday = parseInt(result[0].day);
+            var gettime = result[0].timeframe;
+
+            if (gettime == 'week') {
+              var setdate = moment().add(1, 'weeks').isoWeekday(getday);
+
+              var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+            }
+
+            if (gettime == 'month') {
+              var setdate = moment().add(1, 'months').isoWeekday(getday);
+
+              var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+            }
+
+            if (gettime == 'bi-week') {
+              var setdate = moment().add(2, 'weeks').isoWeekday(getday);
+
+              var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+            }
+
+            if (gettime == 'ninty') {
+              var setdate = moment().add(3, 'months').isoWeekday(getday);
+
+              var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+            }
+
+            if (gettime == 'bi-yearly') {
+              var setdate = moment().add(6, 'months').isoWeekday(getday);
+
+              var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+            }
+
+            var q = "update scheduler set nextrun = '" + dbtime + "', lastran = Now() where id = '" + roletype + "'";
+
+            db.query(q, (err, result) => {
+              if (err) throw err;
+
+              return;
+            });
+          }
+        });
+      } else {
+        day = parseInt(day);
+
+        if (time == 'week') {
+          var setdate = moment().add(1, 'weeks').isoWeekday(day);
+
+          var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+        }
+
+        if (time == 'month') {
+          var setdate = moment().add(1, 'months').isoWeekday(day);
+
+          var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+        }
+
+        if (time == 'bi-week') {
+          var setdate = moment().add(2, 'weeks').isoWeekday(day);
+
+          var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+        }
+
+        if (time == 'ninty') {
+          var setdate = moment().add(3, 'months').isoWeekday(day);
+
+          var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+        }
+
+        if (time == 'bi-yearly') {
+          var setdate = moment().add(6, 'months').isoWeekday(day);
+
+          var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
+        }
+
+        console.log(dbtime);
+
+        var q = "update scheduler set day = " + day + ", timeframe = '" + time + "', nextrun = '" + dbtime + "', lastran = Now() where id = '" + roletype + "'";
+
+        db.query(q, (err, result) => {
+          if (err) throw err;
+
+          return;
+        });
       }
-
-      if (time == 'month') {
-        var setdate = moment().add(1, 'months').isoWeekday(day);
-
-        var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
-      }
-
-      if (time == 'bi-week') {
-        var setdate = moment().add(2, 'weeks').isoWeekday(day);
-
-        var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
-      }
-
-      if (time == 'ninty') {
-        var setdate = moment().add(3, 'months').isoWeekday(day);
-
-        var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
-      }
-
-      if (time == 'bi-yearly') {
-        var setdate = moment().add(6, 'months').isoWeekday(day);
-
-        var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
-      }
-
-      console.log(dbtime);
-
-      var q = "update scheduler set day = " + day + ", timeframe = '" + time + "', nextrun = '" + dbtime + "' where id = '" + roletype + "'";
-
-      // db.query(q, (err, result) => {
-      //   if (err) throw err;
-      //
-      //   res.sendStatus(200);
-      // });
 
     },
 };
