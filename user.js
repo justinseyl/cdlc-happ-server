@@ -469,37 +469,37 @@ module.exports = {
       let time = req.body.time;
 
       if (time == 'week') {
-        const today = moment().isoWeekday();
+        const today = moment().isoWeekday().startOf('day');
 
         if (today <= day) {
-          var setdate = moment().isoWeekday(day);
+          var setdate = moment().isoWeekday(day).startOf('day');
         } else {
-          var setdate = moment().add(1, 'weeks').isoWeekday(day);
+          var setdate = moment().add(1, 'weeks').isoWeekday(day).startOf('day');
         }
 
         var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
       }
 
       if (time == 'month') {
-        var setdate = moment().add(1, 'months').isoWeekday(day);
+        var setdate = moment().add(1, 'months').isoWeekday(day).startOf('day');
 
         var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
       }
 
       if (time == 'bi-week') {
-        var setdate = moment().add(2, 'weeks').isoWeekday(day);
+        var setdate = moment().add(2, 'weeks').isoWeekday(day).startOf('day');
 
         var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
       }
 
       if (time == 'ninty') {
-        var setdate = moment().add(3, 'months').isoWeekday(day);
+        var setdate = moment().add(3, 'months').isoWeekday(day).startOf('day');
 
         var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
       }
 
       if (time == 'bi-yearly') {
-        var setdate = moment().add(6, 'months').isoWeekday(day);
+        var setdate = moment().add(6, 'months').isoWeekday(day).startOf('day');
 
         var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
       }
@@ -992,7 +992,7 @@ module.exports = {
 
         defer.resolve(dateObj);
       });
-      
+
       return defer.promise;
     },
     sendNewScheduleAlter: function(roletype,day,time) {
@@ -1008,31 +1008,31 @@ module.exports = {
             var gettime = result[0].timeframe;
 
             if (gettime == 'week') {
-              var setdate = moment().add(1, 'weeks').isoWeekday(getday);
+              var setdate = moment().add(1, 'weeks').isoWeekday(getday).startOf('day');
 
               var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
             }
 
             if (gettime == 'month') {
-              var setdate = moment().add(1, 'months').isoWeekday(getday);
+              var setdate = moment().add(1, 'months').isoWeekday(getday).startOf('day');
 
               var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
             }
 
             if (gettime == 'bi-week') {
-              var setdate = moment().add(2, 'weeks').isoWeekday(getday);
+              var setdate = moment().add(2, 'weeks').isoWeekday(getday).startOf('day');
 
               var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
             }
 
             if (gettime == 'ninty') {
-              var setdate = moment().add(3, 'months').isoWeekday(getday);
+              var setdate = moment().add(3, 'months').isoWeekday(getday).startOf('day');
 
               var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
             }
 
             if (gettime == 'bi-yearly') {
-              var setdate = moment().add(6, 'months').isoWeekday(getday);
+              var setdate = moment().add(6, 'months').isoWeekday(getday).startOf('day');
 
               var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
             }
@@ -1050,31 +1050,31 @@ module.exports = {
         day = parseInt(day);
 
         if (time == 'week') {
-          var setdate = moment().add(1, 'weeks').isoWeekday(day);
+          var setdate = moment().add(1, 'weeks').isoWeekday(day).startOf('day');
 
           var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
         }
 
         if (time == 'month') {
-          var setdate = moment().add(1, 'months').isoWeekday(day);
+          var setdate = moment().add(1, 'months').isoWeekday(day).startOf('day');
 
           var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
         }
 
         if (time == 'bi-week') {
-          var setdate = moment().add(2, 'weeks').isoWeekday(day);
+          var setdate = moment().add(2, 'weeks').isoWeekday(day).startOf('day');
 
           var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
         }
 
         if (time == 'ninty') {
-          var setdate = moment().add(3, 'months').isoWeekday(day);
+          var setdate = moment().add(3, 'months').isoWeekday(day).startOf('day');
 
           var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
         }
 
         if (time == 'bi-yearly') {
-          var setdate = moment().add(6, 'months').isoWeekday(day);
+          var setdate = moment().add(6, 'months').isoWeekday(day).startOf('day');
 
           var dbtime = setdate.toISOString().slice(0, 19).replace('T', ' ');
         }
