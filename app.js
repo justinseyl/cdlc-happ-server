@@ -139,19 +139,27 @@ var jupdater = schedule.scheduleJob('updater', '*/30 * * * *', function(){
 
   setUserSchedule().then(function(datObj){
     var dateU = new Date(datObj.year,datObj.month,datObj.day,datObj.hour,0,0);
+    var dateU_admin = new Date(datObj.year,datObj.month,datObj.day,datObj.hour,0,0);
 
     schedule.scheduledJobs['userSchedule'].reschedule(dateU);
-    schedule.scheduledJobs['userScheduleAdmin'].reschedule(dateU);
+
+    dateU_admin.setDate(dateU_admin.getDate() + 1);
+    schedule.scheduledJobs['userScheduleAdmin'].reschedule(dateU_admin);
 
     console.log('Updating User Schedule: ' + dateU);
+    console.log('Updating User Schedule For Admin: ' + dateU_admin);
 
     setManagerSchedule().then(function(datObj){
       var dateM = new Date(datObj.year,datObj.month,datObj.day,datObj.hour,0,0);
+      var dateM_admin = new Date(datObj.year,datObj.month,datObj.day,datObj.hour,0,0);
 
       schedule.scheduledJobs['manSchedule'].reschedule(dateM);
-      schedule.scheduledJobs['manScheduleAdmin'].reschedule(dateM);
+
+      dateM_admin.setDate(dateM_admin.getDate() + 1);
+      schedule.scheduledJobs['manScheduleAdmin'].reschedule(dateM_admin);
 
       console.log('Updating Manager Schedule: ' + dateM);
+      console.log('Updating Manager Schedule For Admin: ' + dateM_admin);
 
       setTestSchedule().then(function(datObj){
 
@@ -172,8 +180,8 @@ var j6 = schedule.scheduleJob('manScheduleAdmin', '2019-01-01T00:00:00.001Z', fu
   var mailOptionsMain = {
     from: 'automated@cdlchappiness.com',
     to: 'justin@cdlconsultants.com',
-    subject: 'Weekly CDLC Manager Happiness Surveys',
-    text: 'Weekly CDLC Manager Happiness Surveys Have Been Successfully Sent'
+    subject: 'CDLC Manager Happiness Surveys',
+    text: 'CDLC Manager Happiness Surveys Are In!!!'
   };
 
   transporter.sendMail(mailOptionsMain, function(error, info){
@@ -217,8 +225,8 @@ var j3 = schedule.scheduleJob('userScheduleAdmin', '2019-01-01T00:00:00.001Z', f
   var mailOptionsMain = {
     from: 'automated@cdlchappiness.com',
     to: 'justin@cdlconsultants.com',
-    subject: 'Weekly CDLC Employee Happiness Surveys',
-    text: 'Weekly CDLC Employee Happiness Surveys Have Been Successfully Sent!'
+    subject: 'CDLC Employee Happiness Surveys',
+    text: 'CDLC Employee Happiness Surveys Are In!!!'
   };
 
   transporter.sendMail(mailOptionsMain, function(error, info){

@@ -4,7 +4,7 @@ const uuid = require('uuidv4');
 var generator = require('generate-password');
 const Q = require('q');
 
-const gl_manager = 'Department Manager';
+const gl_manager = 'Department Manager/HR';
 
 module.exports = {
     login: (req, res) => {
