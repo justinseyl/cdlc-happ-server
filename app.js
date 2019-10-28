@@ -135,7 +135,7 @@ app.post('/deletesurveygroup', deletesurveygroup);
 app.post('/deletesurveygroupmulti', deletesurveygroupmulti);
 
 //UPDATER
-var jupdater = schedule.scheduleJob('updater', '*/15 * * * *', function(){
+var jupdater = schedule.scheduleJob('updater', '*/30 * * * *', function(){
 
   setUserSchedule().then(function(datObj){
     var dateU = new Date(datObj.year,datObj.month,datObj.day,datObj.hour,0,0);
@@ -173,7 +173,7 @@ var j6 = schedule.scheduleJob('manScheduleAdmin', '2019-01-01T00:00:00.001Z', fu
     from: 'automated@cdlchappiness.com',
     to: 'justin@cdlconsultants.com',
     subject: 'Weekly CDLC Manager Happiness Surveys',
-    text: 'http://cdlchappiness.com/html/admin_survey.html'
+    text: 'Weekly CDLC Manager Happiness Surveys Have Been Successfully Sent'
   };
 
   transporter.sendMail(mailOptionsMain, function(error, info){
@@ -216,9 +216,9 @@ var j3 = schedule.scheduleJob('userScheduleAdmin', '2019-01-01T00:00:00.001Z', f
 
   var mailOptionsMain = {
     from: 'automated@cdlchappiness.com',
-    to: 'justin@cdlconsultants.com,nickhowell6425@gmail.com',
+    to: 'justin@cdlconsultants.com',
     subject: 'Weekly CDLC Employee Happiness Surveys',
-    text: 'http://cdlchappiness.com/html/admin_survey.html'
+    text: 'Weekly CDLC Employee Happiness Surveys Have Been Successfully Sent!'
   };
 
   transporter.sendMail(mailOptionsMain, function(error, info){
