@@ -857,7 +857,7 @@ module.exports = {
     },
     editBookSave: (req, res) => {
 
-      var newdesc = req.body.desc.replace(/(\r\n|\n|\r)/gm, "").replace(/'/g, '\\\'');
+      var newdesc = req.body.desc.replace(/"/g, "'").replace(/(\r\n|\n|\r)/gm, "").replace(/'/g, '\\\'');
       let q = "update books set name = '" + req.body.title + "', author = '" + req.body.auth + "', description = '" + newdesc + "', image = '" + req.body.img + "' where id = '" + req.body.id + "'";
 
       db.query(q, (err, result) => {
