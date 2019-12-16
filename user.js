@@ -877,8 +877,9 @@ module.exports = {
       });
     },
     addNewBook: (req, res) => {
+      let newdesc = req.body.desc.replace(/'/g, '');
 
-      let q = "insert into books (id,name,author,description,image,status) values ('" + uuid() + "','" + req.body.title + "','" + req.body.auth + "','" + req.body.desc + "','" + req.body.img + "','active')";
+      let q = "insert into books (id,name,author,description,image,status) values ('" + uuid() + "','" + req.body.title + "','" + req.body.auth + "','" + newdesc + "','" + req.body.img + "','active')";
 
       db.query(q, (err, result) => {
         if (err) throw err;
