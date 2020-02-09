@@ -705,7 +705,7 @@ module.exports = {
     },
     getAllUsers: (req, res) => {
       return new Promise(function(resolve, reject) {
-        let q = "select email from users where status = 'active' and (admin != 1 or admin is null) and division != '" + gl_manager + "'";
+        let q = "select email from users where status = 'active' and (admin != 1 or admin is null) and email != 'justin@cdlconsultants.com' and division != '" + gl_manager + "'";
 
         db.query(q, (err, result) => {
           if (err) throw err;
@@ -716,7 +716,7 @@ module.exports = {
     },
     getAllUsersMan: (req, res) => {
       return new Promise(function(resolve, reject) {
-        let q = "select email from users where status = 'active' and (admin != 1 or admin is null) and division = '" + gl_manager + "'";
+        let q = "select email from users where status = 'active' and (admin != 1 or admin is null) and email != 'justin@cdlconsultants.com' and division = '" + gl_manager + "'";
 
         db.query(q, (err, result) => {
           if (err) throw err;
