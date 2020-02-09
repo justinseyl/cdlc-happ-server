@@ -757,14 +757,14 @@ module.exports = {
 
       let roletype = req.body.roletype;
 
-      let q = "select email,name,division,(select date_format(max(updated_at),'%m/%d/%Y') from survey where userid = email) as lastsurvey,(select sum(answer) from survey where userid = email) as comp,(select (count(*)*5) from survey where userid = email) as tot from users where status = 'active'";
+      let q = "select email,name,division,(select date_format(max(updated_at),'%m/%d/%Y') from survey where userid = email) as lastsurvey,(select sum(answer) from survey where userid = email) as comp,(select (count(*)*5) from survey where userid = email) as tot from users where status = 'active' and email != 'justin@cdlconsultants.com'";
 
       if (roletype == 'manager') {
-        q = "select email,name,division,(select date_format(max(updated_at),'%m/%d/%Y') from survey where userid = email) as lastsurvey,(select sum(answer) from survey where userid = email) as comp,(select (count(*)*5) from survey where userid = email) as tot from users where status = 'active' and division = '" + gl_manager + "'";
+        q = "select email,name,division,(select date_format(max(updated_at),'%m/%d/%Y') from survey where userid = email) as lastsurvey,(select sum(answer) from survey where userid = email) as comp,(select (count(*)*5) from survey where userid = email) as tot from users where status = 'active' and email != 'justin@cdlconsultants.com' and division = '" + gl_manager + "'";
       }
 
       if (roletype == 'user') {
-        q = "select email,name,division,(select date_format(max(updated_at),'%m/%d/%Y') from survey where userid = email) as lastsurvey,(select sum(answer) from survey where userid = email) as comp,(select (count(*)*5) from survey where userid = email) as tot from users where status = 'active' and division != '" + gl_manager + "'";
+        q = "select email,name,division,(select date_format(max(updated_at),'%m/%d/%Y') from survey where userid = email) as lastsurvey,(select sum(answer) from survey where userid = email) as comp,(select (count(*)*5) from survey where userid = email) as tot from users where status = 'active' and email != 'justin@cdlconsultants.com' and division != '" + gl_manager + "'";
       }
 
       db.query(q, (err, result) => {
