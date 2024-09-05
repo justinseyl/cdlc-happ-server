@@ -1,0 +1,708 @@
+.main {
+    display: flex;
+    width: 100vw;
+    align-items: flex-start;
+    background: var(--Backdrop, #E1E2E3);
+}
+
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    height: 100vh;
+}
+
+.dashboard .header {
+    display: flex;
+    padding: 40px;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-self: stretch;
+}
+
+.dashboard .header h1 {
+    color: var(--Dark---100, #0A0A0A);
+    font-family: "Instrument Sans";
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.dashboard .header .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.dashboard .content {
+    display: flex;
+    padding: 40px;
+    align-items: flex-start;
+    gap: 40px;
+    align-self: stretch;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.dashboard .content .content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
+    flex: 1 0 0;
+}
+
+.metrics {
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    align-self: stretch;
+}
+
+.metric {
+    display: flex;
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    flex: 1 0 0;
+    align-self: stretch;
+    border-radius: 6px;
+    border: 1px solid var(--Backdrop---05, rgba(225, 226, 227, 0.05));
+    background: rgba(255, 255, 254, 0.40);
+}
+
+.metric-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    align-self: stretch;
+}
+
+.metric-icon {
+    display: flex;
+    width: 20px;
+    height: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.metric-icon img {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.metric-name {
+    color: #000;
+    font-family: "Instrument Sans";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.metric-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    align-self: stretch;
+}
+
+.metric-count {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    align-self: stretch;
+}
+
+.metric-count-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    align-self: stretch;
+}
+
+.metric-count-value {
+    color: #000;
+    font-family: "Instrument Sans";
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.happiness-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 16px;
+    background-color: rgba(255, 254, 254, 0.4);
+    border-radius: 6px;
+    border: 1px solid var(--backdrop-05);
+    flex: 1;
+    flex-grow: 1;
+}
+
+.happiness-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.happiness-title {
+    font-family: "Instrument Sans", Helvetica;
+    font-weight: 600;
+    font-size: 24px;
+    color: #000000;
+}
+
+.happiness-toggle {
+    display: inline-flex;
+    align-items: flex-start;
+    border: 1px solid var(--dark-20);
+    border-radius: 6px;
+}
+
+.toggle-option,
+.toggle-selected {
+    display: flex;
+    width: 76px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.toggle-text {
+    font-family: "Instrument Sans", Helvetica;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--variable-collection-dark-50);
+}
+
+.toggle-text-selected {
+    font-family: "Instrument Sans", Helvetica;
+    font-weight: 600;
+    font-size: 14px;
+    color: #ffffff;
+}
+
+.toggle-selected {
+    background-color: var(--blue-100);
+}
+
+.happiness-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.happiness-item {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.happiness-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 48px;
+    height: 200px;
+    background-color: rgba(225, 226, 227, 0.8);
+    border-radius: 6px;
+    position: relative;
+    justify-content: flex-end;
+    padding: 0px 4px 4px;
+}
+
+.happiness-bar {
+    position: absolute;
+    width: 48px;
+    height: 29px;
+    bottom: 0;
+    background-color: var(--blue-100);
+    border-radius: 6px;
+}
+
+.happiness-percentage {
+    font-family: "Instrument Sans", Helvetica;
+    font-weight: 700;
+    font-size: 14px;
+    color: #ffffff;
+    text-align: center;
+    z-index: 9;
+}
+
+.emoji {
+    width: 56px;
+    height: 56px;
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+.emoji-1 {
+    background-image: url('/gif/pouting-face.gif');
+}
+
+.emoji-2 {
+    background-image: url('/gif/slightly-frowning-face.gif');
+}
+
+.emoji-3 {
+    background-image: url('/gif/neutral-face.gif');
+}
+
+.emoji-4 {
+    background-image: url('/gif/slightly-smiling-face.gif');
+}
+
+.emoji-5 {
+    background-image: url('/gif/beaming-face-with-smiling-eyes.gif');
+}
+
+.next-stats {
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    align-self: stretch;
+}
+
+.widget {
+    display: flex;
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    flex: 1 0 0;
+    align-self: stretch;
+    border-radius: 6px;
+    border: 1px solid var(--Backdrop---05, rgba(225, 226, 227, 0.05));
+    background: rgba(255, 255, 254, 0.40);
+}
+
+.widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+}
+
+.widget-title {
+    color: #000;
+    font-family: "Instrument Sans";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.widget-icon {
+    display: flex;
+    width: 20px;
+    height: 20px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.widget-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    align-self: stretch;
+}
+
+.widget-content-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    align-self: stretch;
+}
+
+.widget-content-inner-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    align-self: stretch;
+}
+
+.widget-content-inner-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: -10px;
+    align-self: stretch;
+}
+
+.widget-emoji {
+    display: flex;
+    width: 80px;
+    height: 80px;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+}
+
+.widget-emoji img {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+}
+
+.widget-emoji-content {
+    display: flex;
+    padding-top: 12px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 16px;
+    align-self: stretch;
+}
+
+.widget-emoji-content-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    align-self: stretch;
+}
+
+.widget-emoji-content-inner h1 {
+    color: var(--Dark---100, #0A0A0A);
+    font-family: "Instrument Sans";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin: 0;
+}
+
+.widget-emoji-content-inner h2 {
+    align-self: stretch;
+    color: var(--Dark---70, rgba(10, 10, 10, 0.70));
+    font-family: "Instrument Sans";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin: 0;
+}
+
+.widget-content-inner-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: -10px;
+    align-self: stretch;
+}
+
+.widget-content-top {
+    display: flex;
+    height: 80px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 8px;
+}
+
+.widget-content-bottom {
+    display: flex;
+    height: 80px;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 8px;
+}
+
+.widget-content-top h1,
+.widget-content-bottom h1 {
+    align-self: stretch;
+    color: var(--Dark---70, rgba(10, 10, 10, 0.70));
+    font-family: "Instrument Sans";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin: 0;
+}
+
+.widget-content-top h2,
+.widget-content-bottom h2 {
+    color: #000;
+    font-family: "Instrument Sans";
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0;
+}
+
+.widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.widget-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+}
+
+.survey-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    align-self: stretch;
+}
+
+.survey-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.survey-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: 13px 16px;
+    background-color: var(--backdrop-05);
+    border-radius: 6px;
+    border: 1px solid var(--dark-20);
+}
+
+.survey-card .div-2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.survey-card .new-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 22px;
+    padding: 0px 8px;
+    border-radius: 100px;
+    border: 1px solid var(--red-100);
+}
+
+.survey-card .new {
+    font-family: "Instrument Sans", Helvetica;
+    font-weight: 700;
+    font-size: 10px;
+    color: var(--red-100);
+    letter-spacing: 0.4px;
+}
+
+.survey-card .group {}
+
+.survey-card .frame-40 {
+    display: flex;
+    flex-direction: column;
+    margin-top: 8px;
+}
+
+.survey-card .text-wrapper-16 {
+    font-family: "Instrument Sans", Helvetica;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--variable-collection-dark-50);
+}
+
+.survey-card .text-wrapper-17 {
+    font-family: "Instrument Sans", Helvetica;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--dark-100);
+}
+
+.survey-card .frame-41 {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.feedback-emojis {
+    width: 32px;
+    height: 32px;
+    background-size: cover;
+    background-position: center;
+}
+
+.survey-card .frame-42 {
+    display: flex;
+    flex-direction: column;
+    margin-left: 8px;
+}
+
+.survey-card .frame-42 .text-wrapper-16,
+.survey-card .frame-42 .text-wrapper-17 {
+    margin: 0;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.survey-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    flex: 1 0 0;
+    padding: 16px;
+    position: relative;
+    background-color: var(--blue-100);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid;
+    border-color: var(--backdrop-05);
+    align-self: stretch;
+}
+
+.survey-container.completed {
+    border: 1px solid var(--Backdrop---05, rgba(225, 226, 227, 0.05));
+    background: rgba(255, 255, 254, 0.40);
+}
+
+.survey-container .survey-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    display: flex;
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+    flex: 0 0 auto;
+}
+
+.survey-container .survey-title-wrapper {
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+    flex: 0 0 auto;
+}
+
+.survey-container .survey-title {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    font-family: "Instrument Sans-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 18px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.survey-container.completed .survey-title {
+    color: #000000;
+}
+
+.survey-container .survey-icon {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    background-image: url(./img/icons.png);
+    background-size: 100% 100%;
+}
+
+.survey-container .survey-description {
+    position: relative;
+    align-self: stretch;
+    font-family: "Instrument Sans-Medium", Helvetica;
+    font-weight: 500;
+    color: #ffffffcc;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.survey-container.completed .survey-description {
+    color: var(--dark-70);
+}
+
+.survey-container .survey-button {
+    all: unset;
+    box-sizing: border-box;
+    display: flex;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 12px;
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+    background-color: var(--white);
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.survey-container.completed .survey-button {
+    border: 1px solid;
+    border-color: var(--dark-100);
+    background-color: transparent;
+}
+
+.survey-container .button-text {
+    position: relative;
+    width: fit-content;
+    font-family: "Instrument Sans-SemiBold", Helvetica;
+    font-weight: 600;
+    color: var(--blue-100);
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.survey-container.completed .button-text {
+    color: var(--dark-100);
+}

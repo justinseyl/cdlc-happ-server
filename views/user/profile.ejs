@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/meta/header') %>
+
+<body>
+  <div class="main">
+    <%- include('partials/sidebar', { currentPage: currentUser.login === userDetails?.email ? 'profile' : 'employees' }) %>
+
+    <div class="dashboard">
+        <div class="header">
+          <h1>
+            <% if (currentUser.login === userDetails?.email) { %>
+              My Profile
+            <% } else { %>
+              <div class="profile-widget" onclick="window.history.back()" style="cursor: pointer;">
+                    <div class="profile-widget-header">
+                      <div class="profile-widget-header-icon">
+                        <img class="icon" src="/icons/arrow-left.svg" alt="Edit">
+                      </div>
+                    </div>
+                  </div>
+              Employee Profile
+            <% } %>
+          </h1>
+          <div class="header-actions">
+            <%- include('partials/form/icon-button', { icon: 'issues-dark.svg', alt: 'Edit', onClick: 'openPopup("issue-popup")' }) %>
+            <%- include('partials/form/icon-button', { icon: 'suggestions-dark.svg', alt: 'Add', onClick: 'openPopup("suggestion-popup")' }) %>
+            <%- include('partials/form/icon-button', { icon: 'notification.svg', alt: 'Delete', onClick: 'handleDelete()' }) %>
+          </div>
+        </div>
+        <div class="content">
+          <div class="content-container">
+            <div class="profile-container">
+              <div class="profile-content">
+                  <div class="profile-tabs">
+                    <div class="profile-tab" onclick="showTabContent('personal')"><div class="profile-tab-text">Personal</div></div>
+                    <div class="profile-tab" onclick="showTabContent('work')"><div class="profile-tab-text">Work</div></div>
+                    <div class="profile-tab" onclick="showTabContent('meta')">
+                      <div class="profile-tab-text">Meta</div>
+                    </div>
+                  </div>
+                  <div id="personal" class="profile-tab-content">
+                    <div class="profile-widget">
+                      <div class="profile-widget-header">
+                        <h1>Basics</h1>
+                        <% if (currentUser.login === userDetails?.email || currentUser.role === 'admin' || currentUser.role === 'superadmin') { %>
+                          <div class="profile-widget-header-icon">
+                            <img class="icon" src="/icons/pencil.svg" alt="Edit" onclick="openPopup('edit-basics-popup')">
+                          </div>
+                        <% } %>
+                      </div>
+                      <div class="profile-widget-content">
+                        <div class="profile-widget-content-list">
+                          <div class="profile-widget-content-list-item">
+                            <h1>First Name</h1>
+                            <h2><%= user.firstname %></h2>
+                          </div>
+                          <div class="profile-widget-content-list-item">
+                            <h1>Last Name</h1>
+                            <h2><%= user.lastname %></h2>
+                          </div>
+                          <div class="profile-widget-content-list-item">
+                            <h1>Date of Birth</h1>
+                            <h2><%= moment(user.date_of_birth).format('L') %></h2>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="profile-widget">
+                      <div class="profile-widget-header">
+                        <h1>Contact</h1>
+                        <% if (user.email === userDetails?.email || user.role === 'admin' || user.role === 'superadmin') { %>
+                          <div class="profile-widget-header-icon">
+                            <img class="icon" src="/icons/pencil.svg" alt="Edit" onclick="openPopup('edit-contact-popup')">
+                          </div>
+                        <% } %>
+                      </div>
+                      <div class="profile-widget-content">
+                        <div class="profile-widget-content-list">
+                          <div class="profile-widget-content-list-item">
+                            <h1>Personal Email Address</h1>
+                            <h2><%= userDetails?.personal_email %></h2>
+                          </div>
+                          <div class="profile-widget-content-list-item">
+                            <h1>Personal Phone Number</h1>
+                            <h2><%= userDetails?.phone_number %></h2>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="profile-widget">
+                      <div class="profile-widget-header">
+                        <h1>Personal Questions</h1>
+                        <% if (user.email === userDetails?.email || user.role === 'admin' || user.role === 'superadmin') { %>
+                          <div class="profile-widget-header-icon">
+                            <img class="icon" src="/icons/pencil.svg" alt="Edit" onclick="openPopup('edit-personal-questions-popup')">
+                          </div>
+                        <% } %>
+                      </div>
+                      <div class="profile-widget-content">
+                        <div class="profile-widget-content-list">
+                          <div class="profile-widget-content-list-item">
+                            <h1>Home Address</h1>
+                            <h2><%= userDetails?.home_address %></h2>
+                          </div>
+                          <div class="profile-widget-content-list-item">
+                            <h1>City</h1>
+                            <h2><%= userDetails?.city %></h2>
+                          </div>
+                          <div class="profile-widget-content-list-item">
+                            <h1>State</h1>
+                            <h2><%= userDetails?.state %></h2>
+                          </div>
+                          <div class="profile-widget-content-list-item">
+                            <h1>Zip</h1>
+                            <h2><%= userDetails?.zip %></h2>
+                          </div>
+                          <div class="profile-widget-content-list-item">
+                            <h1>Marital Status</h1>
+                            <h2 style="text-transform: capitalize;"><%= userDetails?.marital_status %></h2>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="work" class="profile-tab-content">
+                    <div class="profile-widget">
+                      <div class="profile-widget-header">
+                        <h1>Work Contact</h1>
+                      </div>
+                      <div class="profile-widget-content">
+                        <div class="profile-widget-content-list">
+                          <div class="profile-widget-content-list-item">
+                            <h1>Email Address</h1>
+                            <h2><%= userDetails?.email %></h2>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="profile-widget">
+                      <div class="profile-widget-header">
+                        <h1>Emergency Contact</h1>
+                        <% if (user.email === userDetails?.email || user.role === 'admin' || user.role === 'superadmin') { %>
+                          <div class="profile-widget-header-icon">
+                            <img class="icon" src="/icons/pencil.svg" alt="Edit" onclick="openPopup('edit-emergency-contact-popup')">
+                          </div>
+                        <% } %>
+                      </div>
+                      <div class="profile-widget-content">
+                        <div class="profile-widget-content-list">
+                          <div class="profile-widget-content-list-item">
+                            <h1>First Name</h1>
+                            <h2><%= userDetails?.emergency_first_name %></h2>
+                          </div>
+                          <div class="profile-widget-content-list-item">
+                            <h1>Last Name</h1>
+                            <h2><%= userDetails?.emergency_last_name %></h2>
+                          </div>
+                          <div class="profile-widget-content-list-item">
+                            <h1>Relationship</h1>
+                            <h2 style="text-transform: capitalize;"><%= userDetails?.emergency_relationship %></h2>
+                          </div>
+                          <div class="profile-widget-content-list-item">
+                            <h1>Email Address</h1>
+                            <h2><%= userDetails?.emergency_email %></h2>
+                          </div>
+                          <div class="profile-widget-content-list-item">
+                            <h1>Phone Number</h1>
+                            <h2><%= userDetails?.emergency_phone_number %></h2>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="meta" class="profile-tab-content">
+  <div class="profile-widget">
+    <div class="profile-widget-header">
+      <h1>Meta Information</h1>
+      <% if (currentUser.login === userDetails?.email || currentUser.role === 'admin' || currentUser.role === 'superadmin') { %>
+        <div class="profile-widget-header-icon">
+          <img class="icon" src="/icons/pencil.svg" alt="Edit" onclick="openPopup('edit-meta-popup')">
+        </div>
+      <% } %>
+    </div>
+    <div class="profile-widget-content">
+      <div class="profile-widget-content-list">
+        <div class="profile-widget-content-list-item">
+          <h1>Spouse</h1>
+          <h2><%= user.spouse || '' %></h2>
+        </div>
+        <div class="profile-widget-content-list-item">
+          <h1>Anniversary</h1>
+          <h2><%= user.anniv ? moment(user.anniv).format('L') : '' %></h2>
+        </div>
+        <div class="profile-widget-content-list-item">
+          <h1>First Child</h1>
+          <h2><%= user.firstchild || '' %></h2>
+        </div>
+        <div class="profile-widget-content-list-item">
+          <h1>Second Child</h1>
+          <h2><%= user.secondchild || '' %></h2>
+        </div>
+        <div class="profile-widget-content-list-item">
+          <h1>Favorite Drink</h1>
+          <h2><%= user.drink || '' %></h2>
+        </div>
+        <div class="profile-widget-content-list-item">
+          <h1>Favorite Food</h1>
+          <h2><%= user.food || '' %></h2>
+        </div>
+        <div class="profile-widget-content-list-item">
+          <h1>Favorite Restaurant</h1>
+          <h2><%= user.rest || '' %></h2>
+        </div>
+        <div class="profile-widget-content-list-item">
+          <h1>Favorite Store</h1>
+          <h2><%= user.store || '' %></h2>
+        </div>
+        <div class="profile-widget-content-list-item">
+          <h1>Favorite Sports Team</h1>
+          <h2><%= user.team || '' %></h2>
+        </div>
+        <div class="profile-widget-content-list-item">
+          <h1>Favorite Candy</h1>
+          <h2><%= user.candy || '' %></h2>
+        </div>
+        <div class="profile-widget-content-list-item">
+          <h1>Favorite Starbucks Order</h1>
+          <h2><%= user.starbucks || '' %></h2>
+        </div>
+        <div class="profile-widget-content-list-item">
+          <h1>College Attended</h1>
+          <h2><%= user.college || '' %></h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+              </div>
+              <div class="profile-sidebar">
+                <div class="profile-sidebar-widget">
+                  <div class="profile-sidebar-widget-header">
+                    <div class="profile-sidebar-widget-header-text">Employee Info</div>
+                  </div>
+                  <div class="profile-sidebar-widget-content">
+                    <div class="profile-sidebar-widget-content-inner">
+                      <div class="profile-sidebar-widget-content-inner-list">
+                        <div class="sidebar-widget-item">
+                            <div class="sidebar-widget-item-inner">
+                              <h1>Status</h1>
+                              <h2 style="color: <%= user.status === 'active' ? '#25CD21' : '#FC1234' %>; text-transform: uppercase;">
+                                <%= user.status %>
+                              </h2>
+                            </div>
+                        </div>
+                        <div class="sidebar-widget-item">
+                            <div class="sidebar-widget-item-inner">
+                              <h1>Hire Date</h1>
+                              <h2><%= moment(user.created_at).format('L') %></h2>
+                            </div>
+                        </div>
+                        <div class="sidebar-widget-item">
+                            <div class="sidebar-widget-item-inner">
+                              <h1>Department</h1>
+                              <h2><%= userDetails?.department %></h2>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <%- include('partials/popup-form', { id: 'issue-popup', header: 'Immediate Issue', action: '/issues/create', type: 'issue' }) %>
+  <%- include('partials/popup-form', { id: 'suggestion-popup', header: 'New Suggestion', action: '/suggestions/create', type: 'suggestion' }) %>
+  
+  <!-- Edit Popups -->
+  <div id="edit-basics-popup" class="popup-panel" style="display:none;">
+    <div class="popup-container">
+      <div class="popup-content">
+        <div class="popup-header">Edit Basics</div>
+        <form class="login-form popup-form" action="/profile/edit/basics" method="post">
+          <div class="popup-form-actions">
+            <div class="login-input-group">
+              <input type="text" name="first_name" class="login-form-control" value="<%= user.firstname %>" placeholder="First Name" required>
+            </div>
+            <div class="login-input-group">
+              <input type="text" name="last_name" class="login-form-control" value="<%= user.lastname %>" placeholder="Last Name" required>
+            </div>
+            <div class="login-input-group">
+              <input type="date" name="date_of_birth" class="login-form-control" value="<%= moment(user.date_of_birth).format('YYYY-MM-DD') %>" required>
+            </div>
+          </div>
+          <div class="popup-form-buttons">
+            <input type="submit" value="Save" class="btn popup-submit">
+            <input type="button" value="Cancel" class="btn popup-cancel" onclick="closePopup('edit-basics-popup')">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="edit-contact-popup" class="popup-panel" style="display:none;">
+    <div class="popup-container">
+      <div class="popup-content">
+        <div class="popup-header">Edit Contact</div>
+        <form class="login-form popup-form" action="/profile/edit/contact" method="post">
+          <div class="popup-form-actions">
+            <div class="login-input-group">
+              <input type="email" name="personal_email" class="login-form-control" value="<%= userDetails?.personal_email %>" placeholder="Personal Email" required>
+            </div>
+            <div class="login-input-group">
+              <input type="text" name="phone_number" class="login-form-control" value="<%= userDetails?.phone_number %>" placeholder="Phone Number" required>
+            </div>
+          </div>
+          <div class="popup-form-buttons">
+            <input type="submit" value="Save" class="btn popup-submit">
+            <input type="button" value="Cancel" class="btn popup-cancel" onclick="closePopup('edit-contact-popup')">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="edit-meta-popup" class="popup-panel" style="display:none;">
+  <div class="popup-container">
+    <div class="popup-content">
+      <div class="popup-header">Edit Meta Information</div>
+      <form class="login-form popup-form" action="/profile/edit/meta" method="post">
+        <div class="popup-form-actions">
+          <div class="login-input-group">
+            <input type="text" name="spouse" class="login-form-control" value="<%= user.spouse || '' %>" placeholder="Spouse">
+          </div>
+          <div class="login-input-group">
+            <input type="date" name="anniv" class="login-form-control" value="<%= user.anniv ? moment(user.anniv).format('YYYY-MM-DD') : '' %>" placeholder="Anniversary">
+          </div>
+          <div class="login-input-group">
+            <input type="text" name="firstchild" class="login-form-control" value="<%= user.firstchild || '' %>" placeholder="First Child">
+          </div>
+          <div class="login-input-group">
+            <input type="text" name="secondchild" class="login-form-control" value="<%= user.secondchild || '' %>" placeholder="Second Child">
+          </div>
+          <div class="login-input-group">
+            <input type="text" name="drink" class="login-form-control" value="<%= user.drink || '' %>" placeholder="Favorite Drink">
+          </div>
+          <div class="login-input-group">
+            <input type="text" name="food" class="login-form-control" value="<%= user.food || '' %>" placeholder="Favorite Food">
+          </div>
+          <div class="login-input-group">
+            <input type="text" name="rest" class="login-form-control" value="<%= user.rest || '' %>" placeholder="Favorite Restaurant">
+          </div>
+          <div class="login-input-group">
+            <input type="text" name="store" class="login-form-control" value="<%= user.store || '' %>" placeholder="Favorite Store">
+          </div>
+          <div class="login-input-group">
+            <input type="text" name="team" class="login-form-control" value="<%= user.team || '' %>" placeholder="Favorite Sports Team">
+          </div>
+          <div class="login-input-group">
+            <input type="text" name="candy" class="login-form-control" value="<%= user.candy || '' %>" placeholder="Favorite Candy">
+          </div>
+          <div class="login-input-group">
+            <input type="text" name="starbucks" class="login-form-control" value="<%= user.starbucks || '' %>" placeholder="Favorite Starbucks Order">
+          </div>
+          <div class="login-input-group">
+            <input type="text" name="college" class="login-form-control" value="<%= user.college || '' %>" placeholder="College Attended">
+          </div>
+        </div>
+        <div class="popup-form-buttons">
+          <input type="submit" value="Save" class="btn popup-submit">
+          <input type="button" value="Cancel" class="btn popup-cancel" onclick="closePopup('edit-meta-popup')">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+  <div id="edit-personal-questions-popup" class="popup-panel" style="display:none;">
+    <div class="popup-container">
+      <div class="popup-content">
+        <div class="popup-header">Edit Personal Questions</div>
+        <form class="login-form popup-form" action="/profile/edit/personal-questions" method="post">
+          <div class="popup-form-actions">
+            <div class="login-input-group">
+              <input type="text" name="home_address" class="login-form-control" value="<%= userDetails?.home_address %>" placeholder="Home Address" required>
+            </div>
+            <div class="login-input-group">
+              <input type="text" name="city" class="login-form-control" value="<%= userDetails?.city %>" placeholder="City" required>
+            </div>
+            <div class="login-input-group">
+              <input type="text" name="state" class="login-form-control" value="<%= userDetails?.state %>" placeholder="State" required>
+            </div>
+            <div class="login-input-group">
+              <input type="text" name="zip" class="login-form-control" value="<%= userDetails?.zip %>" placeholder="Zip" required>
+            </div>
+            <div class="login-input-group">
+              <select name="marital_status" class="login-form-control" required>
+                <option value="" disabled>Select Marital Status</option>
+                <option value="single" <%= userDetails?.marital_status === 'single' ? 'selected' : '' %>>Single</option>
+                <option value="married" <%= userDetails?.marital_status === 'married' ? 'selected' : '' %>>Married</option>
+                <option value="divorced" <%= userDetails?.marital_status === 'divorced' ? 'selected' : '' %>>Divorced</option>
+                <option value="widowed" <%= userDetails?.marital_status === 'widowed' ? 'selected' : '' %>>Widowed</option>
+              </select>
+            </div>
+          </div>
+          <div class="popup-form-buttons">
+            <input type="submit" value="Save" class="btn popup-submit">
+            <input type="button" value="Cancel" class="btn popup-cancel" onclick="closePopup('edit-personal-questions-popup')">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="edit-emergency-contact-popup" class="popup-panel" style="display:none;">
+    <div class="popup-container">
+      <div class="popup-content">
+        <div class="popup-header">Edit Emergency Contact</div>
+        <form class="login-form popup-form" action="/profile/edit/emergency-contact" method="post">
+          <div class="popup-form-actions">
+            <div class="login-input-group">
+              <input type="text" name="emergency_first_name" class="login-form-control" value="<%= userDetails?.emergency_first_name %>" placeholder="First Name" required>
+            </div>
+            <div class="login-input-group">
+              <input type="text" name="emergency_last_name" class="login-form-control" value="<%= userDetails?.emergency_last_name %>" placeholder="Last Name" required>
+            </div>
+            <div class="login-input-group">
+              <select name="emergency_relationship" class="login-form-control" required>
+                <option value="" disabled>Select Relationship</option>
+                <option value="parent" <%= userDetails?.emergency_relationship === 'parent' ? 'selected' : '' %>>Parent</option>
+                <option value="spouse" <%= userDetails?.emergency_relationship === 'spouse' ? 'selected' : '' %>>Spouse</option>
+                <option value="sibling" <%= userDetails?.emergency_relationship === 'sibling' ? 'selected' : '' %>>Sibling</option>
+                <option value="friend" <%= userDetails?.emergency_relationship === 'friend' ? 'selected' : '' %>>Friend</option>
+                <option value="other" <%= userDetails?.emergency_relationship === 'other' ? 'selected' : '' %>>Other</option>
+              </select>
+            </div>
+            <div class="login-input-group">
+              <input type="email" name="emergency_email" class="login-form-control" value="<%= userDetails?.emergency_email %>" placeholder="Email Address" required>
+            </div>
+            <div class="login-input-group">
+              <input type="text" name="emergency_phone_number" class="login-form-control" value="<%= userDetails?.emergency_phone_number %>" placeholder="Phone Number" required>
+            </div>
+          </div>
+          <div class="popup-form-buttons">
+            <input type="submit" value="Save" class="btn popup-submit">
+            <input type="button" value="Cancel" class="btn popup-cancel" onclick="closePopup('edit-emergency-contact-popup')">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    function showTabContent(tabId) {
+      var contents = document.getElementsByClassName('profile-tab-content');
+      for (var i = 0; i < contents.length; i++) {
+        contents[i].style.display = 'none';
+      }
+      document.getElementById(tabId).style.display = 'flex';
+
+      var tabs = document.getElementsByClassName('profile-tab');
+      for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('active');
+      }
+      document.querySelector('[onclick="showTabContent(\'' + tabId + '\')"]').classList.add('active');
+    }
+
+    // Default to Personal tab
+    document.addEventListener('DOMContentLoaded', function() {
+      showTabContent('personal');
+    });
+  </script>
+
+      <%- include('partials/meta/footer') %>
+
+</body>
+
+</html>

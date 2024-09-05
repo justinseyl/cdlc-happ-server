@@ -1,0 +1,230 @@
+.book-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.books-widget-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+}
+
+.books-widget {
+    display: flex;
+    padding: 16px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid var(--Backdrop---05, rgba(225, 226, 227, 0.05));
+    background: rgba(255, 255, 254, 0.40);
+}
+
+.books-widget .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.books-widget .header .title {
+    color: #000;
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.books-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.book-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    border-radius: 6px;
+    border: 1px solid var(--Dark---20, rgba(10, 10, 10, 0.20));
+    background: var(--Backdrop---05, rgba(225, 226, 227, 0.05));
+    flex: 0 0 30%;
+    max-width: 30%;
+    width: 330px;
+    box-sizing: border-box;
+    padding: 16px;
+    background: #FFFFFF;
+}
+
+.book-details {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+}
+
+.book-image {
+    width: 100px;
+    height: 150px;
+}
+
+.book-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 11px;
+    width: 100%;
+}
+
+.book-title {
+    color: var(--Dark---100, #0A0A0A);
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.author {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.author-label {
+    color: var(--Dark---50, rgba(10, 10, 10, 0.50));
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.author-name {
+    color: var(--Dark---100, #0A0A0A);
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    opacity: 0.9045;
+}
+
+.reviews {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.reviews-count {
+    color: var(--Blue---100, #0E57FF);
+    text-align: right;
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rating-value {
+    color: var(--Dark---100, #0A0A0A);
+    text-align: right;
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.rating-star {
+    width: 12px;
+    height: 12px;
+    fill: var(--Blue---100, #0E57FF);
+}
+
+.book-description {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    width: 100%;
+    flex: 1;
+}
+
+.book-description-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+}
+
+.description-label {
+    color: var(--Dark---50, rgba(10, 10, 10, 0.50));
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.description-text {
+    color: var(--Dark---100, #0A0A0A);
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    opacity: 0.7962;
+    height: 53px;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.admin-actions {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    width: 100%;
+    gap: 10px;
+}
+
+.read-button {
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.read-button.blue-button {
+  background-color: #007bff; /* Blue color */
+  color: white;
+}
+
+.read-button:hover {
+  opacity: 0.8;
+}
+

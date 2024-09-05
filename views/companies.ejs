@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/meta/header') %>
+<body class="companies-body">
+    <div class="companies-container">
+        <div class="companies-card">
+            <div class="companies-card-header">
+                <div class="companies-header-left">
+                    <h3>Our Companies</h3>
+                </div>
+            </div>
+            <div class="companies-card-body">
+                <form id="form_forgot_pass" class="companies-form">
+                    <div class="companies-grid">
+                        <img src="/images/logo/cdl_consultant.png">
+                        <img src="/images/logo/cdl_360.png">
+                        <img src="/images/logo/cdl_manager.png">
+                        <img src="/images/logo/north_shore.png">
+                        <img src="/images/logo/freezy.png">
+                        <img src="/images/logo/csa_360.png">
+                    </div>
+                    <div class="companies-submit-button">
+                        <input value="Close" class="btn companies-btn" onclick="history.back()">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <%- include('partials/meta/footer') %>
+</body>
+</html>

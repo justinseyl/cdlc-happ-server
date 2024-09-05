@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
+
+.companies-body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background: var(--Black, #000);
+    background-image: url('/images/background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 40px;
+}
+
+.companies-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.companies-card {
+    max-width: 100%;
+    width: 50%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 14px 30px 0 rgba(0, 0, 0, 0.14);
+    background-color: #ffffff;
+    padding: 40px 48px;
+    gap: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.companies-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+}
+
+.companies-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.companies-header-left h3 {
+    color: var(--Black, #000);
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 0 !important;
+}
+
+.companies-card-body {
+    width: 100%;
+    padding: 0;
+}
+
+.companies-form {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.companies-grid {
+    display: flex;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: space-evenly;
+    gap: 40px;
+    align-self: stretch;
+    flex-wrap: wrap;
+}
+
+.companies-submit-button {
+    text-align: center;
+}
+
+.btn.companies-btn {
+    display: flex;
+    width: 100%;
+    height: 48px;
+    padding: 8px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 6px;
+    background: var(--Blue---100, #0E57FF);
+    color: var(--White, #FFFFFE);
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+@media (max-width: 767.98px) {
+    .companies-body {
+        padding: 10px;
+    }
+
+    .companies-container {
+        margin-top: 20%;
+    }
+
+    .companies-card {
+        width: 90%;
+        padding: 8%;
+    }
+
+    .btn.companies-btn {
+        width: 100%;
+        height: 45px;
+    }
+}

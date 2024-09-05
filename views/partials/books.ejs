@@ -1,0 +1,67 @@
+<div class="book-card">
+  <div class="book-details">
+    <img class="book-image" src="<%= book.image %>" alt="<%= book.name %>" />
+    <div class="book-info">
+      <p class="book-title"><%= book.name %></p>
+      <div class="author">
+        <span class="author-label">By:</span>
+        <span class="author-name"><%= book.author %></span>
+      </div>
+      <div class="reviews">
+        <span class="reviews-count"><%= book.numReviews %> Reviews</span>
+        <div class="rating">
+          <span class="rating-value"><%= book.rating %></span>
+          <img class="rating-star" src="/icons/star.svg" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="book-description">
+    <div class="book-description-inner">
+      <span class="description-label">Description:</span>
+      <p class="description-text"><%= book.description %></p>
+    </div>
+  </div>
+
+  <% if (isAdmin) { %>
+    <div class="admin-actions">
+      <!-- Edit Button -->
+      <button class="read-button" onclick="<%= onClick %>">
+        <div class="button-text">Edit Book</div>
+      </button>
+
+      <!-- Delete Button -->
+      <button class="read-button delete-button" onclick="confirmDeleteBook('<%= book.id %>')">
+        <div class="button-text">Delete Book</div>
+      </button>
+    </div>
+  <% } else { %>
+    <button class="read-button <%= book.readStatus === 'read' ? '' : 'blue-button' %>" 
+            onclick="toggleReadStatus('<%= book.id %>', <%= book.readStatus === 'read' ? 'true' : 'false' %>)">
+      <div class="button-text"><%= book.readStatus === 'read' ? "I Have Read This" : "Mark as Read" %></div>
+    </button>
+  <% } %>
+</div>
+
+
+<script>
+  function toggleReadStatus(bookId, isRead) {
+    const url = isRead ? '/books/mark-unread' : '/books/mark-read';
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ bookid: bookId }),
+    })
+      .then(response => {
+        if (response.ok) {
+          window.location.reload(); // Reload the page to reflect the updated status
+        } else {
+          alert('Failed to update read status.');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+  }
+</script>

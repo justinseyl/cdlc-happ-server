@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/meta/header') %>
+
+<body>
+
+  <div class="main">
+    <%- include('partials/sidebar', { currentPage: 'employees' }) %>
+
+    <div class="dashboard">
+        <div class="header">
+          <h1>Employees</h1>
+          <div class="header-actions">
+            <%- include('partials/form/icon-button', { icon: 'issues-dark.svg', alt: 'Edit', onClick: 'openPopup("issue-popup")' }) %>
+            <%- include('partials/form/icon-button', { icon: 'suggestions-dark.svg', alt: 'Add', onClick: 'openPopup("suggestion-popup")' }) %>
+            <%- include('partials/form/icon-button', { icon: 'notification.svg', alt: 'Delete', onClick: 'handleDelete()' }) %>
+          </div>
+        </div>
+        <div class="content">
+          <div class="content-container">
+            <div class="widget new-surveys">
+              <div class="widget-header">
+                <div class="widget-title">
+                  All Employees
+                </div>
+                <div>
+                  <%- include('partials/form/select', { id: 'department', label: 'Department', name: 'department', options: departments, selectedValue: division }) %>
+                </div>
+              </div>
+              <div class="widget-content">
+                <div class="survey-list">
+                  <% data.forEach((employee, index) => { %>
+                    <div class="survey-card row" id="card-<%= index %>" onclick="fetchUserDetails('<%= employee.email %>')">
+                      <div class="col-md-3">
+                        <div class="group">
+                          <div class="frame-40">
+                            <div class="text-wrapper-16">Name</div>
+                            <div class="text-wrapper-17">
+                              <%= employee.firstname || '' %> 
+                              <%= employee.lastname || '' %>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="group">
+                          <div class="frame-40">
+                            <div class="text-wrapper-16">Email</div>
+                            <div class="text-wrapper-17"><%= employee.email %></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="group">
+                          <div class="frame-40">
+                            <div class="text-wrapper-16">Division</div>
+                            <div class="text-wrapper-17"><%= employee.division %></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="group">
+                          <div class="frame-40">
+                            <div class="text-wrapper-16">Active</div>
+                            <div class="text-wrapper-17" style="color: <%= employee.status === 'active' ? '#25CD21' : '#FC1234' %>; text-transform: uppercase;"><%= employee.status %></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% }); %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <%- include('partials/meta/footer') %>
+
+  <script>
+    function fetchUserDetails(userId) {
+      // Create a form element
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/profile';
+
+      // Create an input element to hold the userId
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'userId';
+      input.value = userId;
+
+      // Append the input to the form and submit
+      form.appendChild(input);
+      document.body.appendChild(form);
+      form.submit();
+    }
+    function handleSelectChange(selectElement) {
+        const selectedValue = selectElement.value;
+        const url = new URL(window.location.href);
+        url.searchParams.set('division', selectedValue);
+
+        // Reload the page with the new query parameter
+        window.location.href = url.toString();
+      }
+  </script>
+
+  <style>
+    .survey-card {
+      cursor: pointer;
+    }
+  </style>
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/meta/header') %>
+
+<body>
+  <div class="main">
+    <%- include('partials/sidebar', { currentPage: 'books' }) %>
+
+    <div class="dashboard">
+      <div class="header">
+        <h1>Books</h1>
+        <div class="header-actions">
+          <div class="icon-button" onclick="openPopup('addNewBookModal')">
+            Add New Book
+          </div>
+          <%- include('partials/form/icon-button', { icon: 'issues-dark.svg', alt: 'Edit', onClick: 'openPopup("issue-popup")' }) %>
+          <%- include('partials/form/icon-button', { icon: 'suggestions-dark.svg', alt: 'Add', onClick: 'openPopup("suggestion-popup")' }) %>
+          <%- include('partials/form/icon-button', { icon: 'notification.svg', alt: 'Delete', onClick: 'handleDelete()' }) %>
+        </div>
+      </div>
+      <div class="content">
+        <div class="book-list">
+          <% books.forEach(function(book) { %>
+            <%- include('partials/books', { 
+                  book: book, 
+                  isAdmin: isAdmin, 
+                  onClick: isAdmin ? `openEditBookModal(${JSON.stringify(book)})` : `toggleReadStatus('${book.id}')`
+              }) %>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add New Book Modal -->
+  <div id="addNewBookModal" class="popup-panel" style="display:none;">
+    <div class="popup-container">
+      <div class="popup-content">
+        <div class="popup-header">Add New Book</div>
+        <form id="addNewBookForm" class="login-form popup-form" action="/books/add" method="post" enctype="multipart/form-data">
+          <div class="popup-form-actions">
+            <div class="login-input-group">
+              <input id="new-book-title" name="title" type="text" class="login-form-control" placeholder="Title" required>
+            </div>
+            <div class="login-input-group">
+              <input id="new-book-author" name="author" type="text" class="login-form-control" placeholder="Author" required>
+            </div>
+            <div class="login-input-group">
+              <textarea id="new-book-description" name="description" rows="4" cols="50" class="login-form-control" placeholder="Description" required></textarea>
+            </div>
+            <div class="login-input-group">
+              <label for="new-book-image">Book Cover Image</label>
+              <input id="new-book-image" name="image" type="file" class="login-form-control" accept="image/*" required>
+            </div>
+          </div>
+          <div class="popup-form-buttons">
+            <input type="submit" value="Add Book" class="btn popup-submit">
+            <input type="button" value="Cancel" class="btn popup-cancel" onclick="closePopup('addNewBookModal')">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Book Modal -->
+  <div id="editBookModal" class="popup-panel" style="display:none;">
+    <div class="popup-container">
+      <div class="popup-content">
+        <div class="popup-header">Edit Book</div>
+        <form id="editBookForm" class="login-form popup-form" action="/books/edit" method="post">
+          <div class="popup-form-actions">
+            <input id="edit-book-id" name="bookId" type="hidden">
+            <div class="login-input-group">
+              <input id="edit-book-title" name="title" type="text" class="login-form-control" placeholder="Title" required>
+            </div>
+            <div class="login-input-group">
+              <input id="edit-book-author" name="author" type="text" class="login-form-control" placeholder="Author" required>
+            </div>
+            <div class="login-input-group">
+              <textarea id="edit-book-description" name="description" rows="4" cols="50" class="login-form-control" placeholder="Description" required></textarea>
+            </div>
+          </div>
+          <div class="popup-form-buttons">
+            <input type="submit" value="Save Changes" class="btn popup-submit">
+            <input type="button" value="Cancel" class="btn popup-cancel" onclick="closePopup('editBookModal')">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="deleteConfirmModal" class="popup-panel" style="display:none;">
+    <div class="popup-container">
+      <div class="popup-content">
+        <div class="popup-header">Delete Book</div>
+        <p>Are you sure you want to delete this book?</p>
+        <div class="popup-form-actions">
+          <input type="hidden" id="delete-book-id">
+          <button class="btn popup-submit" onclick="submitDeleteBook()">Yes, Delete</button>
+          <button class="btn popup-cancel" onclick="closePopup('deleteConfirmModal')">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden form to handle book deletion -->
+  <form id="deleteBookForm" action="/books/delete" method="post" style="display: none;">
+    <input id="delete-form-book-id" name="bookId" type="hidden">
+  </form>
+
+  <%- include('partials/meta/footer') %>
+
+  <script>
+    function openPopup(modalId) {
+      document.getElementById(modalId).style.display = 'flex';
+    }
+
+    function closePopup(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    function openEditBookModal(book) {
+      // Populate the form with the book data
+      document.getElementById('edit-book-id').value = book.id;
+      document.getElementById('edit-book-title').value = book.name;
+      document.getElementById('edit-book-author').value = book.author;
+      document.getElementById('edit-book-description').value = book.description;
+
+      // Display the modal
+      openPopup('editBookModal');
+    }
+
+    function confirmDeleteBook(bookId) {
+      // Set the book ID in the hidden input of the confirmation modal
+      document.getElementById('delete-book-id').value = bookId;
+
+      // Show the confirmation modal
+      openPopup('deleteConfirmModal');
+    }
+
+    function submitDeleteBook() {
+      const bookId = document.getElementById('delete-book-id').value;
+
+      // Set the book ID in the delete form
+      document.getElementById('delete-form-book-id').value = bookId;
+
+      // Submit the delete form
+      document.getElementById('deleteBookForm').submit();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<% 
+const menuItems = [
+  { id: 'home', name: 'Home', icon: 'home.svg', route: '/' },
+  { id: 'profile', name: 'My Profile', icon: 'profile.svg', route: '/profile' },
+  { id: 'suggestions', name: 'Suggestions', icon: 'suggestions.svg', route: '/suggestions' },
+  { id: 'issues', name: 'Issues', icon: 'issues.svg', route: '/issues' },
+  { id: 'surveys', name: 'Surveys', icon: 'survey.svg', route: '/surveys' },
+  { id: 'employees', name: 'Employees', icon: 'employee.svg', route: '/employees', roles: ['admin', 'superadmin', 'manager'] },
+  { id: 'books', name: 'Books', icon: 'books.svg', route: '/books' },
+  { id: 'time', name: 'Timesheet', icon: 'timesheet.svg', route: '/time' }
+]; 
+%>
+
+<div class="main-navigation-left">
+  <div class="nav-menu-logo">
+    <div class="image"></div>
+    <div class="CDL-manager-logo"></div>
+  </div>
+
+  <div class="timelog-time-clock">
+    <section class="timelog-main-page">
+      <div class="timelog-frame-parent">
+        <div class="timelog-title-parent">
+          <% if (currentTimeLog) { %>
+            <b class="timelog-title <%= isOnBreak ? 'break' : '' %>">
+              <%= isOnBreak ? "ON BREAK" : "CLOCKED IN" %>
+            </b>
+            <div class="timelog-title1">Today's Hours</div>
+          <% } else { %>
+            <b class="timelog-title-base">SHIFT NOT STARTED</b>
+            <div class="timelog-title1">Today's Hours</div>
+          <% } %>
+        </div>
+        <div class="timelog-divider-parent">
+          <b class="timelog-divider"><span id="logged-time">00 : 00 : 00</span></b>
+        </div>
+      </div>
+      
+      <div class="timelog-frame-group">
+        <% if (currentTimeLog) { %>
+          <% if (!isOnBreak) { %>
+            <div class="timelog-button-parent">
+              <button id="start-break-button" class="timelog-button">
+                <div class="timelog-txt">Start Break</div>
+              </button>
+            </div>
+            <div id="clock-out-button" class="timelog-button-wrapper">
+              <div class="timelog-button2">
+                <div class="timelog-txt2">End Shift</div>
+              </div>
+            </div>
+          <% } else { %>
+            <div class="timelog-button-parent">
+              <button id="end-break-button" class="timelog-button">
+                <div class="timelog-txt">End Break</div>
+              </button>
+            </div>
+          <% } %>
+        <% } else { %>
+          <div id="clock-in-button" class="timelog-button-wrapper">
+            <div class="timelog-button2-active">
+              <div class="timelog-txt2">Start Shift</div>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    </section>
+  </div>
+
+  <div class="main-page-links">
+    <% menuItems.forEach(item => { %>
+      <% if (!item.roles || item.roles.includes(user.role)) { %>
+        <a href="<%= item.route %>" class="menu-item <%= currentPage === item.id ? 'active' : '' %>">
+          <img class="icon" src="/icons/<%= item.icon %>" alt="<%= item.name %> icon">
+          <div class="text"><%= item.name %></div>
+          <% if (item.tag) { %>
+            <div class="tag"><div class="new"><%= item.tag %></div></div>
+          <% } %>
+        </a>
+      <% } %>
+    <% }); %>
+  </div>
+
+  <div class="footer-page-links">
+    <a href="/auth/logout" class="menu-item <%= currentPage === 'logout' ? 'active' : '' %>">
+      <img class="icon" src="/icons/logout.svg" alt="Log Out icon">
+      <div class="text">Log Out</div>
+    </a>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const clockInButton = document.getElementById('clock-in-button');
+    const clockOutButton = document.getElementById('clock-out-button');
+    const startBreakButton = document.getElementById('start-break-button');
+    const endBreakButton = document.getElementById('end-break-button');
+    const loggedInTimeElement = document.getElementById('logged-time');
+
+    let intervalId = null;
+
+    function startTimer(element, startTime) {
+      return setInterval(() => {
+        const now = new Date();
+        const diff = now - startTime; // Difference in milliseconds
+
+        const hours = Math.floor(diff / 3600000).toString().padStart(2, '0');
+        const minutes = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+        const seconds = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+
+        element.innerText = `${hours} : ${minutes} : ${seconds}`;
+      }, 1000);
+    }
+
+    function stopTimer(timerId) {
+      clearInterval(timerId);
+    }
+
+    if (clockInButton) {
+      clockInButton.addEventListener('click', async () => {
+        try {
+          const response = await fetch('/time/start-time');
+          if (response.ok) {
+            location.reload(); // Reload to update the UI
+          }
+        } catch (error) {
+          console.error('Error clocking in:', error);
+        }
+      });
+    }
+
+    if (clockOutButton) {
+      clockOutButton.addEventListener('click', async () => {
+        try {
+          const response = await fetch('/time/end-time');
+          if (response.ok) {
+            location.reload(); // Reload to update the UI
+          }
+        } catch (error) {
+          console.error('Error clocking out:', error);
+        }
+      });
+    }
+
+    if (startBreakButton) {
+      startBreakButton.addEventListener('click', async () => {
+        try {
+          const response = await fetch('/time/start-break');
+          if (response.ok) {
+            location.reload(); // Reload to update the UI
+          }
+        } catch (error) {
+          console.error('Error starting break:', error);
+        }
+      });
+    }
+
+    if (endBreakButton) {
+      endBreakButton.addEventListener('click', async () => {
+        try {
+        console.log('endBreakButton')
+          const response = await fetch('/time/end-break');
+          if (response.ok) {
+            location.reload(); // Reload to update the UI
+          }
+        } catch (error) {
+          console.error('Error ending break:', error);
+        }
+      });
+    }
+
+    if (loggedInTimeElement && <%= currentTimeLog ? !isOnBreak : false %>) {
+      const clockInTime = new Date('<%= currentTimeLog ? moment(currentTimeLog.clock_in).utc().format() : '' %>');
+      intervalId = startTimer(loggedInTimeElement, clockInTime);
+    } else if (loggedInTimeElement && <%= currentTimeLog && isOnBreak ? 'true' : 'false' %>) {
+      const breakStartTime = new Date('<%= currentTimeLog ? moment(currentTimeLog.break_start).utc().format() : '' %>');
+      intervalId = startTimer(loggedInTimeElement, breakStartTime);
+    }
+  });
+</script>

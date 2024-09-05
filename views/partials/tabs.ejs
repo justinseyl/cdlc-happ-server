@@ -1,0 +1,16 @@
+<div class="info-tabs">
+  <% tabs.forEach(tab => { %>
+    <button class="tab <%= currentTab === tab ? 'active' : '' %>" onclick="setCurrentTab('<%= tab %>')">
+      <a class="tab-link"><%= tab %></a>
+    </button>
+  <% }) %>
+</div>
+
+<script>
+  function setCurrentTab(tab) {
+    document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+    document.querySelector(`.tab:contains('${tab}')`).classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+    document.getElementById(tab.toLowerCase() + '-content').style.display = 'block';
+  }
+</script>

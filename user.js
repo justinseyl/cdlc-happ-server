@@ -2,30 +2,10 @@ const moment = require('moment');
 var db = require('./conn.js');
 const uuid = require('uuidv4');
 var generator = require('generate-password');
-const Q = require('q');
 
 const gl_manager = 'Department Manager/HR';
 
 module.exports = {
-    login: (req, res) => {
-
-        let usr_email = req.body.email;
-        let usr_pass = req.body.pass;
-
-        let query_find = "select * from users WHERE status = 'active' and email = '" + usr_email + "' and password = '" + usr_pass + "'";
-
-        db.query(query_find, (err, result) => {
-            if (err) throw err;
-
-            if (result.length > 0) {
-                console.log('Logging In');
-                res.send({login:usr_email,admin:result[0].admin});
-            } else {
-              console.log('Username does not exists');
-              res.send({new:''});
-            }
-        });
-    },
     addUser: (req, res) => {
 
         let usr_email = req.body.email;
@@ -90,21 +70,6 @@ module.exports = {
       .catch((err) => { throw err; });
 
     },
-    completesurvey: (req, res) => {
-
-      let usr = req.body.userid;
-      let q = "select count(*) as num from survey s inner join survey_master m on m.formid = s.formid where s.userid = '" + usr + "'";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-          if (result[0].num > 0) {
-            res.send({survey:'completed'});
-          } else {
-            res.send({survey:''});
-          }
-      });
-    },
     getavghapp: (req, res) => {
 
       let usr = req.body.userid;
@@ -142,31 +107,6 @@ module.exports = {
         });
       });
     },
-    getuser: (req, res) => {
-      let usr = req.body.userid;
-      let q = "select email,division, created_at, firstname, lastname, name, phone, dob, work, home, spouse, anniv, firstchild, secondchild, drink, food, rest, store, team, candy, starbucks, college,admin from users where email = '" + usr + "'";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-          Object.keys(result[0]).forEach(function(key) {
-              if(result[0][key] === null) {
-                  result[0][key] = '';
-              }
-          });
-          res.send(result[0]);
-      });
-    },
-    updateuser: (req, res) => {
-      let usr = req.body.userid;
-      let q = "UPDATE users SET firstname = '" + req.body.first + "',lastname = '" + req.body.last + "',name = '" + req.body.name + "',division = '" + req.body.department + "',phone = '" + req.body.phone + "',work = '" + req.body.work + "',dob = '" + req.body.dob + "' where email = '" + usr + "'";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-          res.sendStatus(200);
-      });
-    },
     updateuserques: (req, res) => {
       let usr = req.body.userid;
       let q = "UPDATE users SET home = '" + req.body.home + "',spouse = '" + req.body.spouse + "',anniv = '" + req.body.anniv + "',firstchild = '" + req.body.firstchild + "',secondchild = '" + req.body.secondchild + "',drink = '" + req.body.drink +  "',food = '" + req.body.food +  "',rest = '" + req.body.rest +  "',store = '" + req.body.store +  "',team = '" + req.body.team +  "',candy = '" + req.body.candy  + "',starbucks = '" + req.body.starbucks + "',college = '" + req.body.college + "' where email = '" + usr + "'";
@@ -176,169 +116,6 @@ module.exports = {
 
           res.sendStatus(200);
       });
-    },
-    sendSuggestion: (req, res) => {
-      let usr = req.body.userid;
-      let q = "insert into suggestions (id, title, userid, content, created) values ('" + uuid() + "','" + req.body.subject + "','" + usr + "','" + req.body.content + "','" + moment().format("YYYY-MM-DD HH:mm:ss") + "')";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        db.query("insert into alerts (id,title,content,updated_at,type,status) values ('" + uuid() + "','New Suggestion Added','A new suggestion has been added by " + usr + ".','" + moment().format("YYYY-MM-DD HH:mm:ss") + "','admin','unread')", (err, result) => {
-          if (err) throw err;
-
-          res.sendStatus(200);
-        });
-      });
-    },
-    sendIssue: (req, res) => {
-      let usr = req.body.userid;
-      let q = "insert into issues (id, title, userid, content, created, status) values ('" + uuid() + "','" + req.body.subject + "','" + usr + "','" + req.body.content + "','" + moment().format("YYYY-MM-DD HH:mm:ss") + "','Open')";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        db.query("insert into alerts (id,title,content,updated_at,type,status) values ('" + uuid() + "','New Issue Added','A new issue has been added by " + usr + ".','" + moment().format("YYYY-MM-DD HH:mm:ss") + "','admin','unread')", (err, result) => {
-          if (err) throw err;
-
-          res.sendStatus(200);
-        });
-      });
-    },
-    totalsugg: (req, res) => {
-      let usr = req.body.userid;
-      let q = "select count(id) as tot from suggestions where userid = '" + usr + "'";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        res.send({
-          tot: result[0].tot
-        })
-      });
-    },
-    totalissues: (req, res) => {
-      let usr = req.body.userid;
-      let q = "select count(id) as tot from issues where userid = '" + usr + "'";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        res.send({
-          tot: result[0].tot
-        })
-      });
-    },
-    allsugg: (req, res) => {
-      let usr = req.body.userid;
-      let q = "select id, title, userid, content, date_format(created,'%M %d, %Y') as created from suggestions where userid = '" + usr + "' limit 3";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        res.send(result);
-      });
-    },
-    allissues: (req, res) => {
-      let usr = req.body.userid;
-      let q = "select id, title, userid, content, date_format(created,'%M %d, %Y') as created, status from issues where userid = '" + usr + "' limit 3";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        res.send(result);
-      });
-    },
-    getUnreadBooks: (req, res) => {
-      let usr = req.body.userid;
-
-      getallunreadbooks(usr).then(function(results){
-        res.send(results);
-      });
-
-    },
-    getusercompletedbooks: (req, res) => {
-      let usr = req.body.userid;
-
-      getallreadbooks(usr).then(function(results){
-        res.send(results);
-      });
-
-    },
-    getUnreadBooksById: (req, res) => {
-      let usr = req.body.userid;
-      let id = req.body.id;
-
-      getBookById(usr, id).then(function(results){
-        res.send(results);
-      });
-
-    },
-    getIncompleteBooks: (req, res) => {
-      let usr = req.body.userid;
-
-      getallincompbooks(usr).then(function(results){
-        res.send(results);
-      });
-
-    },
-    unreadtoread: (req, res) => {
-      let usr = req.body.userid;
-      let id = req.body.bookid;
-
-      let q = "insert into userbooks (userid,bookid,status,created) values ('" + usr + "','" + id + "','read','" + moment().format("YYYY-MM-DD HH:mm:ss") + "')";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        db.query("insert into alerts (id,title,content,updated_at,type,status) values ('" + uuid() + "','Book Read','User " + usr + " has moved a book from unread to read.','" + moment().format("YYYY-MM-DD HH:mm:ss") + "','admin','unread')", (err, result) => {
-          if (err) throw err;
-
-          res.sendStatus(200);
-        });
-      });
-
-    },
-    readtounread: (req, res) => {
-      let usr = req.body.userid;
-      let id = req.body.bookid;
-
-      let q = "delete from userbooks where userid = '" + usr + "' and bookid = '" + id + "'";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        db.query("insert into alerts (id,title,content,updated_at,type,status) values ('" + uuid() + "','Book Un-Read','User " + usr + " has moved a book from read to unread.','" + moment().format("YYYY-MM-DD HH:mm:ss") + "','admin','unread')", (err, result) => {
-          if (err) throw err;
-
-          res.sendStatus(200);
-        });
-      });
-
-    },
-    submitreview: (req, res) => {
-      let usr = req.body.userid;
-      let bookid = req.body.bookid;
-      let rating = req.body.reviews;
-      let review = req.body.content;
-      let subject = req.body.subject;
-
-      let q = "insert into book_reviews (id, bookid, rating, review, userid, created, title) values ('" + uuid() + "','" + bookid + "','" + rating + "','" + review + "','" + usr + "','" + moment().format("YYYY-MM-DD HH:mm:ss") + "','" + subject + "')";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        db.query("insert into alerts (id,title,content,updated_at,type,status) values ('" + uuid() + "','New Book Review','User " + usr + " has reviewed a book.','" + moment().format("YYYY-MM-DD HH:mm:ss") + "','admin','unread')", (err, result) => {
-          if (err) throw err;
-
-          db.query("insert into userbooks (userid,bookid,status,created) values ('" + usr + "','" + bookid + "','read','" + moment().format("YYYY-MM-DD HH:mm:ss") + "')", (err, result) => {
-            if (err) throw err;
-
-            res.sendStatus(200);
-          });
-        });
-      });
-
     },
     buildChart: (req, res) => {
       let usr = req.body.userid;
@@ -442,26 +219,6 @@ module.exports = {
           });
         });
       });
-    },
-    gettotals_admin: (req, res) => {
-      let roletype = req.body.roletype;
-
-      let q = "select (select count(*) from suggestions inner join users u on u.email = suggestions.userid where '' = '' ) as sugg,(select count(*) from issues inner join users u on u.email = issues.userid where '' = '') as issues,(select count(distinct concat(formid,userid)) from survey inner join users u on u.email = survey.userid where '' = '') as totsurvey,(select coalesce(sum(tot),0) from (select case when (sum(answer)/(count(distinct question)*5)) <= 0.2 then 1 else 0 end as tot from survey s1 inner join users u on u.email = s1.userid where '' = '' group by formid,userid)a) as totneg";
-
-      if (roletype == 'manager') {
-        q = "select (select count(*) from suggestions inner join users u on u.email = suggestions.userid where u.division = '" + gl_manager + "') as sugg,(select count(*) from issues inner join users u on u.email = issues.userid where u.division = '" + gl_manager + "') as issues,(select count(distinct concat(formid,userid)) from survey inner join users u on u.email = survey.userid where u.division = '" + gl_manager + "') as totsurvey,(select coalesce(sum(tot),0) from (select case when (sum(answer)/(count(distinct question)*5)) <= 0.2 then 1 else 0 end as tot from survey s1 inner join users u on u.email = s1.userid where u.division = '" + gl_manager + "' group by formid,userid)a) as totneg";
-      }
-
-      if (roletype == 'user') {
-        q = "select (select count(*) from suggestions inner join users u on u.email = suggestions.userid where u.division != '" + gl_manager + "') as sugg,(select count(*) from issues inner join users u on u.email = issues.userid where u.division != '" + gl_manager + "') as issues,(select count(distinct concat(formid,userid)) from survey inner join users u on u.email = survey.userid where u.division != '" + gl_manager + "') as totsurvey,(select coalesce(sum(tot),0) from (select case when (sum(answer)/(count(distinct question)*5)) <= 0.2 then 1 else 0 end as tot from survey s1 inner join users u on u.email = s1.userid where u.division != '" + gl_manager + "' group by formid,userid)a) as totneg";
-      }
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        res.send(result[0]);
-      });
-
     },
     sendNewSchedule: (req, res) => {
       let roletype = req.body.roletype;
@@ -725,54 +482,6 @@ module.exports = {
         });
       });
     },
-    allsugg_admin: (req, res) => {
-      let q = "select s.id,s.title,u.name,s.userid,s.content,date_format(s.created,'%m/%d/%Y') as created from suggestions s inner join users u on u.email = s.userid";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        res.send(result);
-      });
-    },
-    allissues_admin: (req, res) => {
-      let q = "select s.id,s.title,u.name,s.status,s.userid,s.content,date_format(s.created,'%m/%d/%Y') as created from issues s inner join users u on u.email = s.userid";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        res.send(result);
-      });
-    },
-    reslveIssue_admin: (req, res) => {
-      let id = req.body.id;
-      let q = "update issues set status = 'Closed' where id = '" + id + "'";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        res.sendStatus(200);
-      });
-    },
-    getEmployees_admin: (req, res) => {
-
-      let roletype = req.body.roletype;
-
-      let q = "select email,name,division,(select date_format(max(updated_at),'%m/%d/%Y') from survey where userid = email) as lastsurvey,(select sum(answer) from survey where userid = email) as comp,(select (count(*)*5) from survey where userid = email) as tot from users where status = 'active' and email != 'justin@cdlconsultants.com'";
-
-      if (roletype == 'manager') {
-        q = "select email,name,division,(select date_format(max(updated_at),'%m/%d/%Y') from survey where userid = email) as lastsurvey,(select sum(answer) from survey where userid = email) as comp,(select (count(*)*5) from survey where userid = email) as tot from users where status = 'active' and email != 'justin@cdlconsultants.com' and division = '" + gl_manager + "'";
-      }
-
-      if (roletype == 'user') {
-        q = "select email,name,division,(select date_format(max(updated_at),'%m/%d/%Y') from survey where userid = email) as lastsurvey,(select sum(answer) from survey where userid = email) as comp,(select (count(*)*5) from survey where userid = email) as tot from users where status = 'active' and email != 'justin@cdlconsultants.com' and division != '" + gl_manager + "'";
-      }
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        res.send(result);
-      });
-    },
     deleteUser: (req, res) => {
       let usr = req.body.userid;
       let q = "update users set status = 'inactive' where email = '" + usr + "'";
@@ -791,27 +500,6 @@ module.exports = {
         if (err) throw err;
 
         res.sendStatus(200);
-      });
-    },
-    getallsurveysgrouped_admin: (req, res) => {
-      let roletype = req.body.roletype;
-
-      var final = {};
-
-      let q = "select formid,sum(terr) as terr,count(distinct userid) as totusr,start,Round((sum(overall)/count(*)) ,0) as overall,tot from (select s1.formid, s1.userid, date_format(min(s1.updated_at),'%M %d, %Y') as start, sum(s1.answer) as overall, count(distinct s1.question)*5 as tot, case when (sum(s1.answer)/(count(distinct s1.question)*5)) <= 0.4 then 1 else 0 end as terr from survey s1 inner join users u on u.email = s1.userid group by s1.formid,s1.userid)a group by a.formid order by start asc";
-
-      if (roletype == 'manager') {
-        q = "select formid,sum(terr) as terr,count(distinct userid) as totusr,start,Round((sum(overall)/count(*)) ,0) as overall,tot from (select s1.formid, s1.userid, date_format(min(s1.updated_at),'%M %d, %Y') as start, sum(s1.answer) as overall, count(distinct s1.question)*5 as tot, case when (sum(s1.answer)/(count(distinct s1.question)*5)) <= 0.4 then 1 else 0 end as terr from survey s1 inner join users u on u.email = s1.userid where u.division = '" + gl_manager + "' group by s1.formid,s1.userid)a group by a.formid order by start asc";
-      }
-
-      if (roletype == 'user') {
-        q = "select formid,sum(terr) as terr,count(distinct userid) as totusr,start,Round((sum(overall)/count(*)) ,0) as overall,tot from (select s1.formid, s1.userid, date_format(min(s1.updated_at),'%M %d, %Y') as start, sum(s1.answer) as overall, count(distinct s1.question)*5 as tot, case when (sum(s1.answer)/(count(distinct s1.question)*5)) <= 0.4 then 1 else 0 end as terr from survey s1 inner join users u on u.email = s1.userid where u.division != '" + gl_manager + "' group by s1.formid,s1.userid)a group by a.formid order by start asc";
-      }
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        res.send(result);
       });
     },
     getallsurveysbyform: (req, res) => {
@@ -843,85 +531,6 @@ module.exports = {
               res.send(final);
             }
           });
-        });
-      });
-    },
-    getBooks_admin: (req, res) => {
-      let q = "select b.id, b.name,b.author,b.description,b.image, coalesce( round((sum(w.rating)/count(w.rating)),1) ,0) as rating, count(w.rating) as reviews from books b left join book_reviews w on w.bookid = b.id where b.status = 'active' group by b.id";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        res.send(result);
-      });
-    },
-    editBookSave: (req, res) => {
-
-      var newdesc = req.body.desc.replace(/"/g, "'").replace(/(\r\n|\n|\r)/gm, "").replace(/'/g, '\\\'');
-      let q = "update books set name = '" + req.body.title + "', author = '" + req.body.auth + "', description = '" + newdesc + "', image = '" + req.body.img + "' where id = '" + req.body.id + "'";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        res.sendStatus(200);
-      });
-    },
-    deleteBook: (req, res) => {
-
-      let q = "update books set status = 'inactive' where id = '" + req.body.id + "'";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        res.sendStatus(200);
-      });
-    },
-    addNewBook: (req, res) => {
-      let newdesc = req.body.desc.replace(/'/g, '');
-
-      let q = "insert into books (id,name,author,description,image,status) values ('" + uuid() + "','" + req.body.title + "','" + req.body.auth + "','" + newdesc + "','" + req.body.img + "','active')";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        db.query("insert into alerts (id,title,content,updated_at,type,status) values ('" + uuid() + "','New Book Added','A new book is now available for you.','" + moment().format("YYYY-MM-DD HH:mm:ss") + "','user','unread')", (err, result) => {
-          if (err) throw err;
-
-          res.sendStatus(200);
-        });
-      });
-    },
-    getalerts: (req, res) => {
-
-      let q = "select title,content,datediff(Now(),updated_at) as diff from alerts where type = 'user' order by diff asc";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        res.send(result);
-      });
-    },
-    getalerts_admin: (req, res) => {
-
-      let q = "select title,content,datediff(Now(),updated_at) as diff from alerts where type = 'admin' order by diff asc";
-
-      db.query(q, (err, result) => {
-        if (err) throw err;
-
-        res.send(result);
-      });
-    },
-    getTempPass: (email) => {
-      return new Promise(function(resolve, reject) {
-        var password = generator.generate({
-            length: 10,
-            numbers: true
-        });
-
-        db.query("update users set temp = '" + password + "' where email = '" + email + "' limit 1", (err, result) => {
-          if (err) throw err;
-
-          resolve(password);
         });
       });
     },
@@ -1102,7 +711,7 @@ function surveys(arr) {
 
   return new Promise(function(resolve, reject) {
     arr.map(function(s) {
-console.log(s);
+
       usr = s.user;
 
       let query_insert_survey = "INSERT INTO survey (formid, number, question, answer, comment, userid, updated_at) VALUES ('" +
@@ -1179,54 +788,6 @@ function getsurveydetails(item, usr) {
           });
       });
     });
-}
-
-function getallunreadbooks(usr, id) {
-  return new Promise(function(resolve, reject) {
-    let q = "select b.id, b.name,b.author,b.description,b.image, coalesce( round((sum(w.rating)/count(w.rating)),1) ,0) as rating, count(w.rating) as reviews from books b left join userbooks u on u.bookid = b.id left join book_reviews w on w.bookid = b.id where b.status = 'active' and (u.userid is null or u.userid = '" + usr + "') group by b.id";
-
-    db.query(q, (err, result) => {
-      if (err) throw err;
-
-      resolve(result);
-    });
-  });
-}
-
-function getallreadbooks(usr) {
-  return new Promise(function(resolve, reject) {
-    let q = "select b.id, b.name,b.author,b.description,b.image, coalesce( round((sum(w.rating)/count(w.rating)),1) ,0) as rating, count(w.rating) as reviews,date_format(u.created,'%m/%d/%Y') as created from books b left join userbooks u on u.bookid = b.id left join book_reviews w on w.bookid = b.id where b.status = 'active' and u.userid = '" + usr + "' and u.status = 'read' group by b.id";
-
-    db.query(q, (err, result) => {
-      if (err) throw err;
-
-      resolve(result);
-    });
-  });
-}
-
-function getBookById(usr, id) {
-  return new Promise(function(resolve, reject) {
-    let q = "select b.name,b.author,b.description,b.image,r.title as review_title,r.review as review_content,date_format(r.created,'%m/%d/%Y') as review_date,r.rating as review_rating,u.name as user_name from books b left join book_reviews r on r.bookid = b.id left join users u on u.email = r.userid where b.status = 'active' and b.id = '" + id + "'";
-
-    db.query(q, (err, result) => {
-      if (err) throw err;
-
-      resolve(result);
-    });
-  });
-}
-
-function getallincompbooks(usr) {
-  return new Promise(function(resolve, reject) {
-    let q = "select b.id, b.name,b.author,b.description,b.image, coalesce( round((sum(w.rating)/count(w.rating)),1) ,0) as rating, count(w.rating) as reviews,date_format(u.created,'%m/%d/%Y') as created from books b left join userbooks u on u.bookid = b.id left join book_reviews w on w.bookid = b.id where b.status = 'active' and (u.userid is null or u.userid != '" + usr + "') group by b.id";
-
-    db.query(q, (err, result) => {
-      if (err) throw err;
-
-      resolve(result);
-    });
-  });
 }
 
 function getMondays(senddate, sendmon) {

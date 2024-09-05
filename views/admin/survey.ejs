@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('partials/meta/header') %>
+
+<body>
+  <div class="main">
+    <%- include('partials/sidebar', { currentPage: 'surveys', user: user }) %>
+
+    <div class="dashboard">
+      <div class="header">
+        <h1>Surveys</h1>
+        <div class="header-actions">
+            <%- include('partials/form/icon-button', { icon: 'issues-dark.svg', alt: 'Edit', onClick: 'openPopup("issue-popup")' }) %>
+            <%- include('partials/form/icon-button', { icon: 'suggestions-dark.svg', alt: 'Add', onClick: 'openPopup("suggestion-popup")' }) %>
+            <%- include('partials/form/icon-button', { icon: 'notification.svg', alt: 'Delete', onClick: 'handleDelete()' }) %>
+          </div>
+      </div>
+
+      <div class="content">
+
+              <ul id="survey-list-admin">
+  <% surveys.forEach(function(item) { %>
+    <li class="survey-list-box-admin" custom="<%= item.start %>" onClick="window.location.href = '/surveys/<%= item.formid %>'">
+      <div class="section-details">
+        <div class="section-header">
+          <h2><%= item.start %></h2>
+          <hr>
+        </div>
+        <div id="<%= item.formid %>" class="section-content" custom="<%= item.start %>">
+          <div class="survey-emoji">
+            <div class="emoji <%= item.smileClass %>"></div>
+          </div>
+          <div class="survey-content-details">
+            <div class="grouping">
+              <h1><%= item.overall %>/<%= item.tot %></h1>
+              <p>Avg. Score</p>
+            </div>
+            <div class="grouping">
+              <h1><%= item.totusr %></h1>
+              <p>Total Users</p>
+            </div>
+            <div class="grouping">
+              <h1><%= item.terr %></h1>
+              <p>Terrible/Bad</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  <% }); %>
+</ul>
+
+          </div>
+
+      </div>
+    </div>
+  </div>
+
+  <%- include('partials/meta/footer') %>
+
+</body>
+</html>

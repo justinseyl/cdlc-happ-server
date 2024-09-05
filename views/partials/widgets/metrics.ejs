@@ -1,0 +1,19 @@
+<div class="metrics">
+  <% data.metrics.forEach(metric => { %>
+    <div class="metric">
+      <div class="metric-header">
+        <div class="metric-icon">
+          <img src="/icons/<%= metric.icon %>.svg" alt="<%= metric.name %>">
+        </div>
+        <div class="metric-name"><%= metric.name %></div>
+      </div>
+      <div class="metric-info">
+        <div class="metric-count">
+          <div class="metric-count-inner">
+            <div class="metric-count-value"><%= metric.count %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% }) %>
+</div>

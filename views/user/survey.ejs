@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/meta/header') %>
+
+<body>
+  <div class="main">
+    <%- include('partials/sidebar', { currentPage: 'survey' }) %>
+
+    <div class="dashboard">
+      <div class="header">
+        <h1>Survey</h1>
+        <div class="header-actions">
+          <%- include('partials/form/icon-button', { icon: 'issues-dark.svg', alt: 'Edit', onClick: 'openPopup("issue-popup")' }) %>
+          <%- include('partials/form/icon-button', { icon: 'suggestions-dark.svg', alt: 'Add', onClick: 'openPopup("suggestion-popup")' }) %>
+          <%- include('partials/form/icon-button', { icon: 'notification.svg', alt: 'Delete', onClick: 'handleDelete()' }) %>
+        </div>
+      </div>
+      <div class="content">
+          <div class="user-survey-container d-flex justify-content-center">
+            <div class="user-survey-card">
+              <div class="user-survey-card-header" id="survey-questions">
+                <!-- Survey questions will be dynamically inserted here -->
+              </div>
+              <div class="user-survey-card-body">
+                <div class="user-survey-result">
+                  <ul class="user-survey-result-ul">
+                    <li class="user-survey-result-li" value="1">
+                      <div class="emoji emoji-1"></div>
+                      <p>Terrible</p>
+                    </li>
+                    <li class="user-survey-result-li" value="2">
+                      <div class="emoji emoji-2"></div>
+                      <p>Bad</p>
+                    </li>
+                    <li class="user-survey-result-li" value="3">
+                      <div class="emoji emoji-3"></div>
+                      <p>Ok</p>
+                    </li>
+                    <li class="user-survey-result-li" value="4">
+                      <div class="emoji emoji-4"></div>
+                      <p>Good</p>
+                    </li>
+                    <li class="user-survey-result-li" value="5">
+                      <div class="emoji emoji-5"></div>
+                      <p>Awesome</p>
+                    </li>
+                  </ul>
+                </div>
+                <div class="user-survey-comments">
+                  <div class="user-survey-comment-label">Do you wish to add any comments?</div>
+                  <form class="user-survey-radio-comments">
+                    <span class="user-survey-radio-label">Yes </span><input type="radio" name="comments" value="yes" checked="checked">
+                    <span class="user-survey-radio-label-no">No </span><input type="radio" name="comments" value="no">
+
+                    <textarea id="input_comments" class="user-survey-comment-textarea" name="commenttext" rows="8" cols="80" placeholder="Enter comments here"></textarea>
+
+                    <div class="user-survey-btn-group">
+                      <div class="login-submit-button" style="flex: 1">
+                        <input id="prev-survey" type="button" value="Previous" class="btn login-btn">
+                      </div>
+                      <div class="login-submit-button" style="flex: 1">
+                        <input id="next-survey" type="button" value="Next" class="btn login-btn">
+                        <input id="complete-survey" type="button" value="Complete" class="btn login-btn" style="display:none;" onclick="submit_survey()">
+                      </div>
+                      <input type="hidden" id="hiddenformid" name="formid" value="" style="display:none;" />
+                    </div>
+
+                    <p class="user-survey-error-text" style="display:none;">** Please select a rating above.</p>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('partials/meta/footer') %>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    const userid = '<%= user.login %>';
+    let data = [];
+    let datanum = 0;
+    let a = [];
+
+    $(document).ready(function() {
+      $.ajax({
+        url: '/surveys/new/questions',
+        type: 'POST',
+        contentType: "application/json",
+        data: JSON.stringify({ userid: userid }),
+        success: function(response) {
+          if (response.length > 0) {
+            data.push(response);
+            buildhtml(response, datanum);
+          } else {
+            alert('Oops, there are no survey questions available at this time!');
+          }
+        },
+        error: function(err) {
+          console.log(err);
+        }
+      });
+
+      $(".user-survey-result-li").click(function() {
+        $(this).addClass('selected').siblings().removeClass('selected');
+      });
+
+      $("input[name='comments']").click(function() {
+        const iscomments = $("input[name='comments']:checked").val();
+        if (iscomments == 'yes') {
+          $("#input_comments").show();
+        } else {
+          $("#input_comments").hide();
+        }
+      });
+
+      $("#next-survey").click(function() {
+        const verification = $(".user-survey-result-li.selected").val();
+        if (verification) {
+          buildanswer();
+          $(".user-survey-error-text").hide();
+          datanum += 1;
+          $("#survey-questions").empty();
+          buildhtml(data[0], datanum);
+        } else {
+          $(".user-survey-error-text").show();
+        }
+      });
+
+      $("#prev-survey").click(function() {
+        buildanswer();
+        datanum -= 1;
+        $("#survey-questions").empty();
+        buildhtml(data[0], datanum);
+      });
+    });
+
+    function buildhtml(dtl, datanum) {
+      console.log(dtl)
+      const total_questions = dtl.length;
+      const html = `
+        <div class="header-left-survey">
+          <h3 id="questionlabel">${data[0][datanum].question}</h3>
+        </div>
+        <div class="header-right">
+          <span id="questionum" class="header-number header-number-first">${data[0][datanum].id}</span>
+          <span class="header-number">/</span>
+          <span class="header-number">${total_questions}</span>
+        </div>`;
+      $('#survey-questions').append(html);
+      $("#hiddenformid").val(data[0][0].formid);
+
+      const exists = a.find(o => parseInt(o.questionnum) === parseInt(data[0][datanum].id));
+      const objIndex = a.findIndex(obj => parseInt(obj.questionnum) == parseInt(data[0][datanum].id));
+
+      if (!exists) {
+        resetDefaults();
+      } else {
+        setDefaults(objIndex);
+      }
+
+      if (datanum == 0) {
+        $("#prev-survey").hide();
+        $("#next-survey").css({ width: '100%', "margin-left": '0px' });
+      } else {
+        $("#prev-survey").show();
+        $("#next-survey").css({ width: '100%', "margin-left": '5px' });
+      }
+
+      if ((datanum + 1) == data[0].length) {
+        $("#next-survey").hide();
+        $("#complete-survey").show();
+      } else {
+        $("#next-survey").show();
+        $("#complete-survey").hide();
+      }
+    }
+
+    function submit_survey() {
+      const verification = $(".user-survey-result-li.selected").val();
+      if (verification) {
+        buildanswer();
+        $(".user-survey-error-text").hide();
+        $.ajax({
+          url: '/surveys/new/insert',
+          type: 'POST',
+          data: JSON.stringify(a),
+          contentType: "application/json",
+          success: function(response) {
+            window.location.href = "/";
+          },
+          error: function(err) {
+            console.log(err);
+          }
+        });
+      } else {
+        $(".user-survey-error-text").show();
+      }
+    }
+
+    function buildanswer() {
+      const form_id = $("#hiddenformid").val();
+      const question = $("#questionlabel").html();
+      const questionnum = $("#questionum").html();
+      const answer = $(".user-survey-result-li.selected").val();
+      const comments = $("#input_comments").val();
+
+      const exists = a.find(o => o.questionnum === questionnum);
+
+      if (exists) {
+        const objIndex = a.findIndex(obj => obj.questionnum == questionnum);
+        a[objIndex].answer = answer;
+        a[objIndex].comments = comments;
+      } else {
+        a.push({
+          formid: form_id,
+          questionnum: questionnum,
+          question: question,
+          answer: answer,
+          comments: comments,
+          user: userid
+        });
+      }
+    }
+
+    function setDefaults(objIndex) {
+      resetDefaults();
+      const get_answer = a[objIndex].answer;
+      const get_comm = a[objIndex].comments;
+
+      const n = '.user-survey-result-li[value="' + get_answer + '"]';
+      $(n).addClass("selected");
+
+      $("#input_comments").val(get_comm);
+    }
+
+    function resetDefaults() {
+      $(".user-survey-result-li.selected").removeClass("selected");
+      $('[name="comments"]').prop('checked', false);
+      $('[name="comments"][value="yes"]').prop('checked', 'checked');
+      $("#input_comments").val("");
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+:root {
+  --inactive: rgba(153, 161, 176, 1);
+  --primary-solid-black: rgba(17, 24, 22, 1);
+  --active-green: rgba(37, 205, 33, 1);
+  --primary: rgba(25, 120, 88, 1);
+  --greyd: rgba(194, 199, 208, 1);
+  --white: rgba(255, 255, 254, 1);
+  --red-icon: rgba(230, 71, 71, 1);
+  --blue-icon: rgba(71, 103, 230, 1);
+  --backdrop: rgba(225, 226, 227, 1);
+  --dark-100: rgba(10, 10, 10, 1);
+  --black: rgba(0, 0, 0, 1);
+  --blue-100: rgba(14, 87, 255, 1);
+  --backdrop-50: rgba(225, 226, 227, 0.5);
+  --red-100: rgba(252, 18, 52, 1);
+  --white-04: rgba(255, 255, 255, 0.04);
+  --backdrop-05: rgba(225, 226, 227, 0.05);
+  --dark-20: rgba(10, 10, 10, 0.2);
+  --dark-70: rgba(10, 10, 10, 0.7);
+  --blue-200: rgba(7, 44, 128, 1);
+  --variable-collection-backdrop-50: rgba(225, 226, 227, 0.5);
+  --variable-collection-dark-50: rgba(10, 10, 10, 0.5);
+  --variable-collection-blue-20: rgba(14, 87, 255, 0.2);
+  --variable-collection-blue-35: rgba(14, 87, 255, 0.35);
+}

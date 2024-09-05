@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/meta/header') %>
+<body class="forgot-password-body">
+    <div class="forgot-password-container">
+        <div class="forgot-password-card">
+            <div class="forgot-password-card-header">
+                <div class="forgot-password-header-left">
+                    <h3>Forgot Password?</h3>
+                </div>
+                <div class="forgot-password-header-right">
+                    <a href="/login" class="forgot-password-header-button">Back</a>
+                </div>
+            </div>
+            <div class="forgot-password-card-body">
+                <form id="form_forgot_pass" class="forgot-password-form" action="/auth/forgot" method="post" onsubmit="showConfirmationAlert(event)">
+                    <div class="forgot-password-recovery">
+                        <p>Please enter your email address below and we will send you a link to reset your password.</p>
+                    </div>
+                    <div>
+                        <div class="forgot-password-input-group">
+                            <input id="email" name="email" type="email" class="forgot-password-form-control" placeholder="Email Address" required>
+                        </div>
+                    </div>
+                    <div class="forgot-password-submit-button">
+                        <p id="confim-mess" style="display:none;">Email Sent! Please check your inbox for your temporary password.</p>
+                        <button type="submit" class="btn forgot-password-btn" id="submit_forgot">Send Link</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <%- include('partials/meta/footer') %>
+
+    <script>
+        function showConfirmationAlert(event) {
+            event.preventDefault();
+            alert('If the email exists in our system, you will receive a password reset link.');
+            document.getElementById('form_forgot_pass').submit();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<div>
+	<%- include('partials/popup-form', { id: 'issue-popup', header: 'Immediate Issue', action: '/issues/create', type: 'issue' }) %>
+  <%- include('partials/popup-form', { id: 'suggestion-popup', header: 'New Suggestion', action: '/suggestions/create', type: 'suggestion' }) %>
+
+  <script>
+    function openPopup(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+
+    function closePopup(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+  </script>
+</div>

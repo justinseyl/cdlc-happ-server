@@ -1,0 +1,21 @@
+<div id="<%= id %>" class="popup-panel" style="display:none;">
+  <div class="popup-container">
+    <div class="popup-content">
+      <div class="popup-header"><%= header %></div>
+      <form class="login-form popup-form" action="<%= action %>" method="post">
+        <div class="popup-form-actions">
+          <div class="login-input-group">
+            <input id="<%= id %>-subject" name="subject" type="text" class="login-form-control" placeholder="Subject" required>
+          </div>
+          <div class="login-input-group">
+            <textarea id="<%= id %>-content" name="content" rows="4" cols="50" class="login-form-control" placeholder="Please explain the <%= type %>" required></textarea>
+          </div>
+        </div>
+        <div class="popup-form-buttons">
+          <input type="submit" value="Submit" class="btn popup-submit">
+          <input type="button" value="Cancel" class="btn popup-cancel" onclick="closePopup('<%= id %>')">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<div class="select-picker">
+  <select id="<%= id %>" name="<%= name %>" onchange="handleSelectChange(this)">
+    <option value="" <%= !selectedValue ? 'selected' : '' %>>All Selected</option>
+    <% options.forEach(option => { %>
+      <option value="<%= option.value %>" <%= option.value === selectedValue ? 'selected' : '' %>><%= option.text %></option>
+    <% }); %>
+  </select>
+</div>

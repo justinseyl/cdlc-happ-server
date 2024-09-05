@@ -1,0 +1,13 @@
+<div class="survey-container<%= completed ? ' completed' : '' %>">
+  <div class="survey-header">
+    <div class="survey-title-wrapper">
+      <div class="survey-title"><%= title %></div>
+    </div>
+    <p class="survey-description">
+      <%= description %>
+    </p>
+  </div>
+  <button class="survey-button" onclick="<%= buttonOnClick %>">
+    <div class="button-text"><%= buttonText %></div>
+  </button>
+</div>

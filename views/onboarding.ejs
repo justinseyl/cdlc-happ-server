@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/meta/header') %>
+
+<body class="login-body">
+    <div class="login-container">
+        <h1 class="onboarding-welcome-text">Welcome!</h1>
+        <div class="onboarding-card">
+            <div class="onboarding-card-body">
+                <form class="onboarding-form" action="/auth/onboarding" method="post">
+                    <!-- Personal Information -->
+                    <h2 class="onboarding-section-header">Personal Information</h2>
+                    <div class="onboarding-form-row">
+                        <input id="first_name" name="first_name" type="text" class="onboarding-form-control" placeholder="First Name" required>
+                        <input id="last_name" name="last_name" type="text" class="onboarding-form-control" placeholder="Last Name" required>
+                    </div>
+                    <div class="onboarding-form-row">
+                        <input id="personal_email" name="personal_email" type="email" class="onboarding-form-control" placeholder="Personal Email Address">
+                    </div>
+                    <div class="onboarding-form-row">
+                        <input id="phone_number" name="phone_number" type="text" class="onboarding-form-control" placeholder="Phone Number">
+                    </div>
+                    <div class="onboarding-form-row">
+                        <input id="date_of_birth" name="date_of_birth" type="date" class="onboarding-form-control" placeholder="Date of Birth">
+                    </div>
+                    <div class="onboarding-form-row">
+                        <input id="home_address" name="home_address" type="text" class="onboarding-form-control" placeholder="Home Address">
+                    </div>
+                    <div class="onboarding-form-row">
+                        <input id="city" name="city" type="text" class="onboarding-form-control" placeholder="City">
+                        <input id="state" name="state" type="text" class="onboarding-form-control" placeholder="State">
+                        <input id="zip" name="zip" type="text" class="onboarding-form-control" placeholder="Zip Code">
+                    </div>
+                    <div class="onboarding-form-row">
+                        <select id="marital_status" name="marital_status" class="onboarding-form-control">
+                            <option value="" disabled selected>Marital Status</option>
+                            <option value="single">Single</option>
+                            <option value="married">Married</option>
+                            <option value="divorced">Divorced</option>
+                            <option value="widowed">Widowed</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Employment Information -->
+                    <h2 class="onboarding-section-header">Employment Information</h2>
+                    <div class="onboarding-form-row">
+                        <input id="work_email" name="work_email" type="email" class="onboarding-form-control" placeholder="Work Email" value="<%= user.login %>" required disabled>
+                    </div>
+                    <div class="onboarding-form-row">
+                        <select id="department" name="department" class="onboarding-form-control" required>
+                            <option value="" disabled>Select Department</option>
+                            <% departments.forEach(department => { %>
+                                <option value="<%= department.value %>"><%= department.text %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <!-- Emergency Contact Information -->
+                    <h2 class="onboarding-section-header">Emergency Contact</h2>
+                    <div class="onboarding-form-row">
+                        <input id="emergency_first_name" name="emergency_first_name" type="text" class="onboarding-form-control" placeholder="First Name">
+                        <input id="emergency_last_name" name="emergency_last_name" type="text" class="onboarding-form-control" placeholder="Last Name">
+                    </div>
+                    <div class="onboarding-form-row">
+                        <select id="emergency_relationship" name="emergency_relationship" class="onboarding-form-control">
+                            <option value="" disabled selected>Relationship</option>
+                            <option value="parent">Parent</option>
+                            <option value="spouse">Spouse</option>
+                            <option value="sibling">Sibling</option>
+                            <option value="friend">Friend</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="onboarding-form-row">
+                        <input id="emergency_email" name="emergency_email" type="email" class="onboarding-form-control" placeholder="Email Address">
+                    </div>
+                    <div class="onboarding-form-row">
+                        <input id="emergency_phone_number" name="emergency_phone_number" type="text" class="onboarding-form-control" placeholder="Phone Number">
+                    </div>
+                    <div class="onboarding-submit-button">
+                        <input type="submit" value="Complete Onboarding" class="btn onboarding-btn">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <%- include('partials/meta/footer') %>
+</body>
+
+</html>

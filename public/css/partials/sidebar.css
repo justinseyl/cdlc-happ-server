@@ -1,0 +1,449 @@
+.main-navigation-left {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 100vh;
+    background-color: var(--dark-100);
+}
+
+.nav-menu-logo {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 120px;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--black);
+    border-radius: 0 0 8px 8px;
+    position: relative;
+}
+
+.nav-menu-logo .image {
+    position: absolute;
+    width: 300px;
+    height: 120px;
+    top: 0;
+    left: 0;
+    border-radius: 0 0 0 8px;
+    background-image: url('/images/background.png');
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+.nav-menu-logo .CDL-manager-logo {
+    position: relative;
+    width: 126px;
+    height: 56px;
+    background-image: url('/images/logo/cdl-manager.svg');
+    background-size: 100% 100%;
+}
+
+.main-page-links {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+    gap: 10px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.menu-item {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 6px;
+    transition: background-color 0.3s, fill 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.menu-item.active,
+.menu-item:hover {
+    background-color: var(--backdrop-05);
+}
+
+.menu-item .icon {
+    width: 24px;
+    height: 24px;
+    fill: var(--backdrop-50);
+}
+
+.menu-item.active .icon {
+    fill: var(--blue-100);
+}
+
+.menu-item .text {
+    font-family: "Instrument Sans", Helvetica;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--white);
+}
+
+.menu-item .tag {
+    display: flex;
+    height: 20px;
+    padding: 0px 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 100px;
+    border: 1px solid var(--Red---100, #FC1234);
+}
+
+.menu-item .tag .new {
+    color: var(--Red---100, #FC1234);
+    font-family: "Instrument Sans";
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+.footer-page-links {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+    gap: 10px;
+}
+
+.timelog-title,
+.timelog-title1,
+.timelog-title-base {
+    align-self: stretch;
+    position: relative;
+    line-height: 22px;
+    mix-blend-mode: normal;
+}
+
+.timelog-title {
+    height: 22px;
+    align-self: stretch;
+    color: var(--Blue---100, #0E57FF);
+    text-align: center;
+    font-family: "Instrument Sans";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    /* 183.333% */
+    letter-spacing: 1px;
+}
+
+.timelog-title-base {
+    height: 22px;
+    align-self: stretch;
+    color: var(--White, #FFFFFE);
+    text-align: center;
+    font-family: "Instrument Sans";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    /* 183.333% */
+    letter-spacing: 1px;
+}
+
+.timelog-title1 {
+    height: 22px;
+    align-self: stretch;
+    color: var(--Backdrop---50, var(--Backdrop---50, rgba(225, 226, 227, 0.50)));
+    text-align: center;
+    font-family: "Instrument Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px;
+    /* 157.143% */
+}
+
+.timelog-title-parent {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.timelog-divider {
+    flex: 1;
+    display: inline-block;
+    min-width: 42px;
+    overflow: hidden;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    color: var(--White, #FFFFFE);
+    font-family: "Instrument Sans";
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.timelog-divider-base {
+    flex: 1;
+    display: inline-block;
+    min-width: 42px;
+    overflow: hidden;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    color: var(--White, #FFFFFE);
+    font-family: "Instrument Sans";
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    opacity: 0.6;
+}
+
+.timelog-divider,
+.timelog-divider1,
+.timelog-icon,
+.timelog-divider-base {
+    position: relative;
+}
+
+.timelog-icon {
+    height: 11.8px;
+    width: 4px;
+}
+
+.timelog-divider1 {
+    flex: 1;
+    display: inline-block;
+    min-width: 40px;
+}
+
+.timelog-divider-parent,
+.timelog-frame-parent {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.timelog-divider-parent {
+    width: 100%;
+    flex-direction: row;
+    gap: var(--gap-xs);
+    text-align: left;
+    font-size: var(--font-size-13xl);
+    color: var(--white);
+    text-align: center;
+}
+
+.timelog-frame-parent {
+    align-self: stretch;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.timelog-lead-icon,
+.timelog-txt {
+    position: relative;
+}
+
+.timelog-lead-icon {
+    height: 20px;
+    width: 20px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: none;
+}
+
+.timelog-txt {
+    font-size: var(--font-size-sm);
+    text-transform: capitalize;
+    font-weight: 600;
+    font-family: var(--font-instrument-sans);
+    color: var(--backdrop-50);
+    text-align: left;
+    display: inline-block;
+    mix-blend-mode: normal;
+    min-width: 75px;
+}
+
+.timelog-trail-icon {
+    height: 20px;
+    width: 20px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: none;
+}
+
+.timelog-button {
+    cursor: pointer;
+    display: flex;
+    height: 32px;
+    padding: 8px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    flex: 1 0 0;
+    border-radius: 6px;
+    background-color: transparent;
+    border: 1px solid var(--Backdrop---50, rgba(225, 226, 227, 0.50));
+    color: var(--Backdrop---50, var(--Backdrop---50, rgba(225, 226, 227, 0.50)));
+    font-family: "Instrument Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.timelog-txt1 {
+    position: relative;
+    text-transform: capitalize;
+    font-weight: 600;
+    display: inline-block;
+    mix-blend-mode: normal;
+    min-width: 78px;
+}
+
+.timelog-trail-icon1 {
+    height: 20px;
+    width: 20px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: none;
+}
+
+.timelog-button-parent {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 12px;
+    align-self: stretch;
+}
+
+.timelog-lead-icon2 {
+    height: 20px;
+    width: 20px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: none;
+}
+
+.timelog-txt2 {
+    position: relative;
+    text-transform: capitalize;
+    font-weight: 600;
+    display: inline-block;
+    mix-blend-mode: normal;
+    min-width: 61px;
+}
+
+.timelog-trail-icon2 {
+    height: 20px;
+    width: 20px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: none;
+}
+
+.timelog-frame-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 12px;
+    align-self: stretch;
+}
+
+.timelog-button-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 12px;
+    align-self: stretch;
+}
+
+.timelog-button2 {
+    cursor: pointer;
+    display: flex;
+    height: 32px;
+    padding: 8px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    flex: 1 0 0;
+    border-radius: 6px;
+    border: 1px solid var(--Red---100, #FC1234);
+    color: var(--Red---100, #FC1234);
+    font-family: "Instrument Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.timelog-button2-active {
+    cursor: pointer;
+    display: flex;
+    height: 32px;
+    padding: 8px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    flex: 1 0 0;
+    background-color: var(--Blue---100, #0E57FF);;
+    color: var(--White, #FFFFFE);
+    font-family: "Instrument Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: capitalize;
+    border-radius: 6px;
+}
+
+.timelog-bottom-div,
+.timelog-main-page {
+    align-self: stretch;
+    overflow: hidden;
+}
+
+.timelog-main-page {
+    border-radius: var(--br-7xs);
+    background-color: rgba(225, 226, 227, 0.03);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--padding-xl);
+    gap: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(14, 87, 255, 0.9);
+    font-family: var(--font-instrument-sans);
+}
+
+.timelog-bottom-div {
+    height: 1px;
+    position: relative;
+    background-color: var(--backdrop-05);
+    flex-shrink: 0;
+}
+
+.timelog-time-clock {
+    width: 300px;
+    background-color: var(--dark-100);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 24px 16px 0;
+    box-sizing: border-box;
+    gap: 24px;
+    line-height: normal;
+    letter-spacing: normal;
+}

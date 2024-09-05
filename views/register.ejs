@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/meta/header') %>
+<body class="login-body">
+  <div class="login-container">
+      <div class="login-card">
+        <div class="login-card-logo">
+          <img src="/images/logo/cdl_manager-color.png">
+        </div>
+        <div class="login-card-header">
+          <div class="login-header-left">
+            <h3>Sign Up</h3>
+            <a href="/login">/ Log In</a>
+          </div>
+          <a href="/auth/companies" class="login-header-companies-button">Our Companies</a>
+        </div>
+        <div class="login-card-body">
+          <form class="login-form" action="/auth/signup" method="post">
+            <div>
+              <div class="login-input-group">
+                <input id="email" name="email" type="email" class="login-form-control" placeholder="Email Address" required>
+              </div>
+              <div class="login-input-group">
+                <input id="password" type="password" name="password" class="login-form-control" placeholder="Password" required>
+              </div>
+              <div class="login-input-group">
+                <input id="confirm_password" type="password" name="confirm_password" class="login-form-control" placeholder="Confirm Password" required>
+              </div>
+              <div class="login-input-group">
+                <select id="division" name="division" class="login-form-control" required>
+                  <option value="" disabled selected>Select Division</option>
+                  <% departments.forEach(function(department) { %>
+                    <option value="<%= department.value %>"><%= department.text %></option>
+                  <% }); %>
+                </select>
+              </div>
+              <div class="login-input-group">
+                <p class="tos-text">By creating an account you agree to the 
+                  <a href="/tos">Terms of Service</a> and 
+                  <a href="/privacy">Privacy Policy</a>
+                </p>
+              </div>
+            </div>
+            <% if (error) { %>
+              <div class="login-error-message"><%= error %></div>
+            <% } %>
+            <div class="login-submit-button">
+              <input type="submit" value="Sign Up" class="btn login-btn">
+            </div>
+          </form>
+        </div>
+      </div>
+  </div>
+
+  <%- include('partials/meta/footer') %>
+</body>
+</html>

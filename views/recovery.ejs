@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/meta/header') %>
+<body class="login-body">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-card-logo">
+        <img src="/images/logo/cdl_manager-color.png">
+      </div>
+      <div class="login-card-header">
+        <div class="login-header-left">
+          <h3>Password Recovery</h3>
+        </div>
+        <a href="/login" class="login-header-companies-button">Back to Login</a>
+      </div>
+      <div class="login-card-body">
+        <form id="recoveryform" class="login-form" action="/auth/recovery/submit" method="post">
+          <div>
+            <div class="login-input-group">
+              <input id="email" name="email" type="email" class="login-form-control" placeholder="Email Address" required>
+            </div>
+            <div class="login-input-group">
+              <input id="temppassword" name="temppassword" type="password" class="login-form-control" placeholder="Temporary Password" autocomplete="off" required>
+            </div>
+            <div class="login-input-group">
+              <input id="password" name="password" type="password" class="login-form-control" placeholder="New Password" required>
+            </div>
+            <div class="login-input-group">
+              <input id="password2" name="password2" type="password" class="login-form-control" placeholder="Re Enter New Password" onkeyup="checkPassword()" required>
+            </div>
+          </div>
+          <div class="login-submit-button">
+            <input type="submit" value="Change Password" class="btn login-btn">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <%- include('partials/meta/footer') %>
+
+  <script>
+    function checkPassword() {
+      const password = document.getElementById('password').value;
+      const password2 = document.getElementById('password2').value;
+      const submitButton = document.querySelector('.login-submit-button input');
+
+      if (password !== password2) {
+        submitButton.disabled = true;
+        submitButton.value = "Passwords do not match";
+      } else {
+        submitButton.disabled = false;
+        submitButton.value = "Change Password";
+      }
+    }
+  </script>
+</body>
+</html>

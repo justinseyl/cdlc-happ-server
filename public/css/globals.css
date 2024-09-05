@@ -1,0 +1,71 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  line-height: normal;
+}
+
+.full-width {
+  width: 100%;
+}
+
+a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+:root {
+  /* fonts */
+  --font-montserrat: Montserrat;
+  --font-instrument-sans: "Instrument Sans";
+
+  /* font sizes */
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-sm: 14px;
+  --font-size-13xl: 32px;
+
+  /* Colors */
+  --black: #000;
+  --color-lightgray: #d3d4d3;
+  --white: #fff;
+  --blue-100: #0e57ff;
+  --white1: #fffffe;
+  --dark-100: #0a0a0a;
+  --dark-50: rgba(10, 10, 10, 0.5);
+  --dark-20: rgba(10, 10, 10, 0.2);
+
+  /* Gaps */
+  --gap-10xl: 29px;
+  --gap-xl: 20px;
+  --gap-21xl: 40px;
+  --gap-5xs: 8px;
+  --gap-3xs: 10px;
+  --gap-5xl: 24px;
+  --gap-7xs: 6px;
+
+  /* Paddings */
+  --padding-21xl: 40px;
+  --padding-xl: 20px;
+  --padding-3xs: 10px;
+  --padding-29xl: 48px;
+  --padding-7xl: 26px;
+  --padding-5xl: 24px;
+  --padding-xs: 12px;
+  --padding-2xs: 11px;
+
+  /* Border radiuses */
+  --br-7xs: 6px;
+  --br-5xs: 8px;
+}
+
+.error-message {
+  color: #FC1234;
+  font-family: "Instrument Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 142.857% */
+}

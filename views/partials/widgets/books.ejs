@@ -1,0 +1,39 @@
+<div class="books-widget-container">
+  <div class="books-widget">
+    <div class="header">
+      <div class="title">Suggested Reading</div>
+    </div>
+    <div class="books-container">
+      <% books.forEach(function(book) { %>
+      <div class="book-card">
+        <div class="book-details">
+          <img class="book-image" src="<%= book.image %>" alt="<%= book.name %>" />
+          <div class="book-info">
+            <p class="book-title"><%= book.name %></p>
+            <div class="author">
+              <span class="author-label">By:</span>
+              <span class="author-name"><%= book.author %></span>
+            </div>
+            <div class="reviews">
+              <span class="reviews-count"><%= book.numReviews %> Reviews</span>
+              <div class="rating">
+                <span class="rating-value"><%= book.rating %></span>
+                <img class="rating-star" src="img/star.svg" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="book-description">
+          <div class="book-description-inner">
+            <span class="description-label">Description:</span>
+            <p class="description-text"><%= book.desc %></p>
+          </div>
+        </div>
+        <button class="read-button">
+          <div class="button-text"><%= book.read ? "I Have Read This" : "Mark as Read" %></div>
+        </button>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+</div>

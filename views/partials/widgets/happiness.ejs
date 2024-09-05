@@ -1,0 +1,83 @@
+<div class="happiness-container full-width">
+  <div class="happiness-header">
+    <div class="happiness-title">Happiness</div>
+    <div class="happiness-toggle">
+      <div class="toggle-option" data-period="day"><div class="toggle-text">Day</div></div>
+      <div class="toggle-option toggle-selected" data-period="week"><div class="toggle-text toggle-text-selected">Week</div></div>
+      <div class="toggle-option" data-period="month"><div class="toggle-text">Month</div></div>
+      <div class="toggle-option" data-period="year"><div class="toggle-text">Year</div></div>
+    </div>
+  </div>
+  <div class="happiness-content">
+    <div class="happiness-item">
+      <div class="happiness-bar-container">
+        <div class="happiness-bar"></div>
+        <div class="happiness-percentage">0%</div>
+      </div>
+      <div class="emoji emoji-1"></div>
+    </div>
+    <div class="happiness-item">
+      <div class="happiness-bar-container">
+        <div class="happiness-bar"></div>
+        <div class="happiness-percentage">0%</div>
+      </div>
+      <div class="emoji emoji-2"></div>
+    </div>
+    <div class="happiness-item">
+      <div class="happiness-bar-container">
+        <div class="happiness-bar"></div>
+        <div class="happiness-percentage">0%</div>
+      </div>
+      <div class="emoji emoji-3"></div>
+    </div>
+    <div class="happiness-item">
+      <div class="happiness-bar-container">
+        <div class="happiness-bar"></div>
+        <div class="happiness-percentage">0%</div>
+      </div>
+      <div class="emoji emoji-4"></div>
+    </div>
+    <div class="happiness-item">
+      <div class="happiness-bar-container">
+        <div class="happiness-bar"></div>
+        <div class="happiness-percentage">0%</div>
+      </div>
+      <div class="emoji emoji-5"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const chartData = <%- JSON.stringify(chartData) %>;
+
+    const periodElements = document.querySelectorAll('.happiness-toggle .toggle-option');
+    const barElements = document.querySelectorAll('.happiness-bar');
+    const percentageElements = document.querySelectorAll('.happiness-percentage');
+
+    function updateHappiness(period) {
+      const data = chartData[period];
+      if (!data) return;
+
+      const total = data.reduce((acc, val) => acc + val, 0);
+
+      data.forEach((value, index) => {
+        const percentage = total ? ((value / total) * 100).toFixed(0) + '%' : '0%';
+        barElements[index].style.height = percentage;
+        percentageElements[index].textContent = percentage;
+      });
+    }
+
+    periodElements.forEach(el => {
+      el.addEventListener('click', function() {
+        document.querySelector('.toggle-selected').classList.remove('toggle-selected');
+        document.querySelector('.toggle-text-selected').classList.remove('toggle-text-selected');
+        this.classList.add('toggle-selected');
+        this.querySelector('.toggle-text').classList.add('toggle-text-selected');
+        updateHappiness(this.dataset.period);
+      });
+    });
+
+    updateHappiness('week'); // Set default period to week
+  });
+</script>

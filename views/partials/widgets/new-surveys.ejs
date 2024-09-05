@@ -1,0 +1,48 @@
+<div class="widget new-surveys">
+  <div class="widget-header">
+    <div class="widget-title">New Surveys</div>
+  </div>
+  <div class="widget-content">
+    <div class="survey-list">
+      <% newSurveys.forEach(survey => { %>
+        <div class="survey-card row">
+          <div class="col-md-3">
+            <div class="group">
+              <div class="frame-40">
+                <div class="text-wrapper-16">Name</div>
+                <div class="text-wrapper-17"><%= survey.name %></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="group">
+              <div class="frame-40">
+                <div class="text-wrapper-16">Department</div>
+                <div class="text-wrapper-17"><%= survey.department %></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="group">
+              <div class="frame-40">
+                <div class="text-wrapper-16">Date</div>
+                <div class="text-wrapper-17"><%= survey.date %></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="group">
+              <div class="frame-41">
+                <div class="feedback-emojis emoji-<%= Math.round(survey.emoji) %>"></div>
+                <div class="frame-42">
+                  <div class="text-wrapper-16">Overall Score</div>
+                  <div class="text-wrapper-17"><%= survey.score %></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</div>

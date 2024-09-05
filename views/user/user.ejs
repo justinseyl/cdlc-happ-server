@@ -1,0 +1,48 @@
+<%
+  const isSurveyCompleted = data.survey.completed;
+  const survey_title = isSurveyCompleted ? "Survey Complete" : "New Survey!";
+  const survey_desc = isSurveyCompleted ? "You have completed this week's survey." : "There is a new survey available to take. Click below to begin.";
+  const survey_button = isSurveyCompleted ? "View My Surveys" : "Begin Survey";
+  const buttonOnClick = isSurveyCompleted ? "window.location.href='/surveys'" : "window.location.href='/user/survey/new'";
+%>
+
+<!DOCTYPE html>
+<html>
+<%- include('partials/meta/header') %>
+
+<body>
+  <div class="main">
+    <%- include('partials/sidebar', { currentPage: 'home' }) %>
+
+    <div class="dashboard">
+        <div class="header">
+          <h1>Home</h1>
+          <div class="header-actions">
+            <%- include('partials/form/icon-button', { icon: 'issues-dark.svg', alt: 'Edit', onClick: 'openPopup("issue-popup")' }) %>
+            <%- include('partials/form/icon-button', { icon: 'suggestions-dark.svg', alt: 'Add', onClick: 'openPopup("suggestion-popup")' }) %>
+            <%- include('partials/form/icon-button', { icon: 'notification.svg', alt: 'Delete', onClick: 'handleDelete()' }) %>
+          </div>
+        </div>
+        <div class="content">
+          <div class="content-container">
+            <div class="next-stats">
+              <%- include('partials/widgets/average-happiness', { avgHappiness: data.avgHappiness, value: data.totalSurveys, label: 'Surveys' }) %>
+              <%- include('partials/widgets/new-survey', { 
+                title: survey_title,
+                description: survey_desc,
+                buttonText: survey_button,
+                buttonOnClick: buttonOnClick,
+                completed: isSurveyCompleted
+              }) %>
+            </div>
+            <%- include('partials/widgets/happiness', { chartData: data.chartData }) %>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <%- include('partials/meta/footer') %>
+
+</body>
+
+</html>
